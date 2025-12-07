@@ -1,748 +1,716 @@
-"use client";
+'use client';
 
-const scrollToId = (id: string) => {
-  if (typeof window === "undefined") return;
-  const el = document.getElementById(id);
-  if (!el) return;
-  const y = el.getBoundingClientRect().top + window.scrollY - 72;
-  window.scrollTo({ top: y, behavior: "smooth" });
-};
+import { useState } from 'react';
+import Button from './components/Button';
+import Section from './components/Section';
+import Container from './components/Container';
+import FAQItem from './components/FAQItem';
 
-export default function HomePage() {
+export default function Home() {
+  const [expandedFAQ, setExpandedFAQ] = useState<string | null>(null);
+
+  const toggleFAQ = (id: string) => {
+    setExpandedFAQ(expandedFAQ === id ? null : id);
+  };
+
   return (
-    <main className="page-shell">
-      <Header />
+    <main className="w-full bg-white">
+      {/* ============ HERO ============ */}
+      <Section className="bg-gradient-to-br from-white via-slate-50 to-white border-b border-slate-100">
+        <Container>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-20 lg:py-32">
+            {/* Left: Text */}
+            <div className="flex flex-col gap-8">
+              <div className="flex flex-col gap-4">
+                <h1 className="text-5xl lg:text-6xl font-bold leading-tight text-slate-900">
+                  Your Baseline, Handled.
+                </h1>
+                <p className="text-xl text-slate-600 leading-relaxed">
+                  A 90-day protocol for the 5–10% of health that pills actually influence. Stable energy, better sleep, clearer focus—built into daily habit.
+                </p>
+              </div>
 
-      <section className="hero" id="top">
-        <div>
-          <div className="hero-eyebrow">
-            <span className="hero-eyebrow-pill" />
-            <span>Eonic Baseline • 90-day health autopilot</span>
-          </div>
-          <h1 className="hero-title">
-            Health autopilot{" "}
-            <span className="hero-highlight">for high-agency people.</span>
-          </h1>
-          <p className="hero-subtitle">
-            Eonic Baseline is a pill-first protocol for busy, ambitious people
-            who want better energy, sleep, and focus—without turning health into
-            a full-time job.
-          </p>
+              <p className="text-base text-slate-700 leading-relaxed">
+                Most health advice is noise. Eonic Baseline is the opposite: a small, evidence-backed stack that works. No hype. No randomness. Just consistent support for your biochemical foundation.
+              </p>
 
-          <div className="hero-ctas">
-            <button
-              className="btn btn-primary"
-              onClick={() => scrollToId("waitlist")}
-            >
-              Join the Baseline waitlist
-            </button>
-            <button
-              className="btn btn-outline"
-              onClick={() => scrollToId("how-it-works")}
-            >
-              See how it works
-            </button>
-          </div>
+              {/* Hero Form */}
+              <form
+                action="https://example.com/waitlist"
+                method="POST"
+                className="flex flex-col gap-4 max-w-sm"
+              >
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="hero-name" className="text-sm font-medium text-slate-700">
+                    Your name
+                  </label>
+                  <input
+                    id="hero-name"
+                    type="text"
+                    name="name"
+                    placeholder="e.g., Priya"
+                    required
+                    className="px-4 py-3 border border-slate-200 rounded-lg text-base text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                  />
+                </div>
 
-          <p className="hero-footnote">
-            We take over the 5–10% of your health that supplements can actually
-            influence, and do it properly—so you can focus on everything else.
-          </p>
-        </div>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="hero-email" className="text-sm font-medium text-slate-700">
+                    Email
+                  </label>
+                  <input
+                    id="hero-email"
+                    type="email"
+                    name="email"
+                    placeholder="priya@example.com"
+                    required
+                    className="px-4 py-3 border border-slate-200 rounded-lg text-base text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                  />
+                </div>
 
-        <div className="hero-layout-right" aria-hidden="true">
-          <div className="hero-grid">
-            <div className="hero-card">
-              <div className="hero-card-label">Daily micro-stack</div>
-              <div className="hero-card-value">
-                2–4 capsules, sequenced for energy, focus, sleep and recovery.
+                <Button type="submit" variant="primary" className="w-full mt-2">
+                  Join the Waitlist
+                </Button>
+              </form>
+
+              <p className="text-xs text-slate-500">
+                We'll email you when the early cohort opens. No spam, ever.
+              </p>
+            </div>
+
+            {/* Right: Product Visual (Placeholder) */}
+            <div className="hidden lg:flex flex-col items-center justify-center">
+              <div className="w-full max-w-sm aspect-square bg-gradient-to-br from-slate-100 to-slate-50 rounded-2xl border border-slate-200 flex items-center justify-center">
+                <div className="text-center text-slate-400">
+                  <p className="text-sm font-medium mb-2">Baseline Kit Visual</p>
+                  <p className="text-xs">(Illustration/Product Mockup)</p>
+                </div>
               </div>
             </div>
-            <div className="hero-card">
-              <div className="hero-card-label">Mindspace cost</div>
-              <div className="hero-card-value">
-                Near-zero. We design and orchestrate the stack. You just take it.
+          </div>
+        </Container>
+      </Section>
+
+      {/* ============ THE PROBLEM ============ */}
+      <Section>
+        <Container>
+          <div className="py-20 lg:py-32">
+            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 text-center mb-16">
+              The three things we're all ignoring
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Energy */}
+              <div className="bg-white border border-slate-200 rounded-xl p-8 hover:shadow-md transition-shadow">
+                <h3 className="text-2xl font-semibold text-slate-900 mb-3">
+                  Energy that crashes by 3 PM
+                </h3>
+                <p className="text-slate-600 leading-relaxed">
+                  You're reaching for coffee, sugar, or stimulants because your baseline is unstable. Most supplements don't address this. We do.
+                </p>
+              </div>
+
+              {/* Sleep */}
+              <div className="bg-white border border-slate-200 rounded-xl p-8 hover:shadow-md transition-shadow">
+                <h3 className="text-2xl font-semibold text-slate-900 mb-3">
+                  Sleep that doesn't feel restorative
+                </h3>
+                <p className="text-slate-600 leading-relaxed">
+                  You're logging 7–8 hours but waking up foggy. The issue isn't quantity; it's quality. Your baseline biochemistry is scattered.
+                </p>
+              </div>
+
+              {/* Focus */}
+              <div className="bg-white border border-slate-200 rounded-xl p-8 hover:shadow-md transition-shadow">
+                <h3 className="text-2xl font-semibold text-slate-900 mb-3">
+                  Attention that fragments too easily
+                </h3>
+                <p className="text-slate-600 leading-relaxed">
+                  You're context-switching, losing momentum, and blaming yourself. Your nervous system is missing baseline inputs. Eonic addresses this.
+                </p>
               </div>
             </div>
-            <div className="hero-card">
-              <div className="hero-card-label">Built for</div>
-              <div className="hero-card-value">
-                Urban operators, founders and knowledge workers (25–45).
+          </div>
+        </Container>
+      </Section>
+
+      {/* ============ WHAT IS EONIC BASELINE ============ */}
+      <Section className="bg-slate-50 border-y border-slate-100">
+        <Container>
+          <div className="py-20 lg:py-32">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              {/* Left: Visual */}
+              <div className="hidden lg:flex flex-col items-center justify-center">
+                <div className="w-full max-w-sm aspect-square bg-gradient-to-br from-white to-slate-50 rounded-2xl border border-slate-200 flex items-center justify-center">
+                  <div className="text-center text-slate-400">
+                    <p className="text-sm font-medium mb-2">Baseline Kit</p>
+                    <p className="text-xs">(3–4 bottles/packs)</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right: Text */}
+              <div className="flex flex-col gap-8">
+                <h2 className="text-4xl lg:text-5xl font-bold text-slate-900">
+                  The Eonic Baseline: Your 90-day health OS
+                </h2>
+
+                <div className="flex flex-col gap-6">
+                  <p className="text-lg text-slate-700 leading-relaxed">
+                    The Baseline is not a vitamin bottle. It's a <strong>protocol</strong>: a small, daily stack of evidence-backed ingredients designed to stabilize your core biochemistry over 90 days. Think of it as an operating system for your baseline health—the foundation everything else runs on.
+                  </p>
+
+                  <p className="text-base text-slate-600 leading-relaxed">
+                    When your baseline is solid, you feel it. Sleep improves. Energy steadies. Focus sharpens. And because it's a <em>system</em>, not random supplements, you actually stay consistent.
+                  </p>
+                </div>
+
+                <div className="bg-white border border-slate-200 rounded-xl p-8">
+                  <h3 className="text-xl font-semibold text-slate-900 mb-6">
+                    The Baseline Kit includes:
+                  </h3>
+                  <ul className="flex flex-col gap-4">
+                    <li className="flex gap-3 text-slate-700">
+                      <span className="text-teal-600 font-bold">•</span>
+                      <span>A-grade multivitamin complex (calibrated for India)</span>
+                    </li>
+                    <li className="flex gap-3 text-slate-700">
+                      <span className="text-teal-600 font-bold">•</span>
+                      <span>Omega-3 (plant-based)</span>
+                    </li>
+                    <li className="flex gap-3 text-slate-700">
+                      <span className="text-teal-600 font-bold">•</span>
+                      <span>Magnesium + cofactors (sleep + nervous system)</span>
+                    </li>
+                    <li className="flex gap-3 text-slate-700">
+                      <span className="text-teal-600 font-bold">•</span>
+                      <span>Optional: Adaptogens (depending on your intake assessment)</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm text-slate-500 uppercase tracking-wide">Duration</p>
+                    <p className="text-lg font-semibold text-slate-900">90 days</p>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm text-slate-500 uppercase tracking-wide">Daily habit</p>
+                    <p className="text-lg font-semibold text-slate-900">2–4 minutes</p>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm text-slate-500 uppercase tracking-wide">Estimated cost</p>
+                    <p className="text-lg font-semibold text-slate-900">₹3,500–4,500</p>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <p className="text-sm text-slate-500 uppercase tracking-wide">Per day</p>
+                    <p className="text-lg font-semibold text-slate-900">₹38–50</p>
+                  </div>
+                </div>
+
+                <Button variant="primary" className="w-full md:w-auto">
+                  Explore the Baseline
+                </Button>
               </div>
             </div>
-            <div className="hero-card">
-              <div className="hero-card-label">Calibrated for India</div>
-              <div className="hero-card-value">
-                Formulations respect Indian diets, labs and constraints.
+          </div>
+        </Container>
+      </Section>
+
+      {/* ============ HOW IT WORKS ============ */}
+      <Section>
+        <Container>
+          <div className="py-20 lg:py-32">
+            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 text-center mb-16">
+              Your 90-day journey
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {/* Step 1 */}
+              <div className="flex flex-col gap-6">
+                <div className="flex items-center justify-center w-14 h-14 rounded-full bg-teal-100 text-teal-700 font-bold text-xl">
+                  1
+                </div>
+                <div className="flex flex-col gap-3">
+                  <h3 className="text-xl font-semibold text-slate-900">Intake</h3>
+                  <p className="text-sm text-slate-600">
+                    We ask about your sleep, energy, digestion, stress, and current habits. Not a medical questionnaire—just understanding your baseline.
+                  </p>
+                  <p className="text-xs text-slate-500 font-medium uppercase tracking-wide">Week 1</p>
+                </div>
+              </div>
+
+              {/* Step 2 */}
+              <div className="flex flex-col gap-6">
+                <div className="flex items-center justify-center w-14 h-14 rounded-full bg-teal-100 text-teal-700 font-bold text-xl">
+                  2
+                </div>
+                <div className="flex flex-col gap-3">
+                  <h3 className="text-xl font-semibold text-slate-900">Design</h3>
+                  <p className="text-sm text-slate-600">
+                    Based on your intake, we design your personal stack from the Baseline kit. Small tweaks for your specific needs.
+                  </p>
+                  <p className="text-xs text-slate-500 font-medium uppercase tracking-wide">Week 2</p>
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div className="flex flex-col gap-6">
+                <div className="flex items-center justify-center w-14 h-14 rounded-full bg-teal-100 text-teal-700 font-bold text-xl">
+                  3
+                </div>
+                <div className="flex flex-col gap-3">
+                  <h3 className="text-xl font-semibold text-slate-900">Execute</h3>
+                  <p className="text-sm text-slate-600">
+                    You take your stack daily. We send weekly micro-guidance: optimization tips, tracking reminders, nothing overbearing.
+                  </p>
+                  <p className="text-xs text-slate-500 font-medium uppercase tracking-wide">Weeks 3–12</p>
+                </div>
+              </div>
+
+              {/* Step 4 */}
+              <div className="flex flex-col gap-6">
+                <div className="flex items-center justify-center w-14 h-14 rounded-full bg-teal-100 text-teal-700 font-bold text-xl">
+                  4
+                </div>
+                <div className="flex flex-col gap-3">
+                  <h3 className="text-xl font-semibold text-slate-900">Review</h3>
+                  <p className="text-sm text-slate-600">
+                    You reflect on changes: sleep quality, energy steadiness, focus clarity. And you decide what comes next.
+                  </p>
+                  <p className="text-xs text-slate-500 font-medium uppercase tracking-wide">Week 13</p>
+                </div>
               </div>
             </div>
           </div>
+        </Container>
+      </Section>
 
-          <div className="hero-timeline">
-            <div className="hero-timeline-row">
-              <span>Week 1–2</span>
-              <span>Stabilise sleep / crashes</span>
-            </div>
-            <div className="hero-timeline-row">
-              <span>Week 3–6</span>
-              <span>Energy & focus feel less random</span>
-            </div>
-            <div className="hero-timeline-row">
-              <span>Week 7–12</span>
-              <span>Baseline becomes your new default</span>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ============ WHY EONIC IS DIFFERENT ============ */}
+      <Section className="bg-slate-50 border-y border-slate-100">
+        <Container>
+          <div className="py-20 lg:py-32">
+            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 text-center mb-6">
+              We're an OS, not a SKU catalogue
+            </h2>
+            <p className="text-xl text-slate-600 text-center max-w-3xl mx-auto mb-16">
+              Most supplement brands are SKU-first: they show you 20 products and hope you find the right combo. We're protocol-first.
+            </p>
 
-      <SectionProblem />
-      <SectionBaseline />
-      <SectionHowItWorks />
-      <SectionBenefits />
-      <SectionWhyDifferent />
-      <SectionFounder />
-      <SectionRoadmap />
-      <SectionFAQ />
-      <SectionWaitlist />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Differentiator 1 */}
+              <div className="bg-white border border-slate-200 rounded-xl p-8">
+                <h3 className="text-2xl font-semibold text-slate-900 mb-4">
+                  System, Not Random Bottles
+                </h3>
+                <ul className="flex flex-col gap-3">
+                  <li className="flex gap-3 text-slate-700">
+                    <span className="text-teal-600 font-bold flex-shrink-0">✓</span>
+                    <span>One coherent protocol instead of 'pick and mix'</span>
+                  </li>
+                  <li className="flex gap-3 text-slate-700">
+                    <span className="text-teal-600 font-bold flex-shrink-0">✓</span>
+                    <span>Ingredients chosen to work together, not in isolation</span>
+                  </li>
+                  <li className="flex gap-3 text-slate-700">
+                    <span className="text-teal-600 font-bold flex-shrink-0">✓</span>
+                    <span>You stay consistent because there's no decision paralysis</span>
+                  </li>
+                </ul>
+              </div>
 
-      <Footer />
-    </main>
-  );
-}
+              {/* Differentiator 2 */}
+              <div className="bg-white border border-slate-200 rounded-xl p-8">
+                <h3 className="text-2xl font-semibold text-slate-900 mb-4">
+                  Evidence-First, India-Calibrated
+                </h3>
+                <ul className="flex flex-col gap-3">
+                  <li className="flex gap-3 text-slate-700">
+                    <span className="text-teal-600 font-bold flex-shrink-0">✓</span>
+                    <span>Every ingredient backed by research</span>
+                  </li>
+                  <li className="flex gap-3 text-slate-700">
+                    <span className="text-teal-600 font-bold flex-shrink-0">✓</span>
+                    <span>Formulated for actual Indian nutrition baselines</span>
+                  </li>
+                  <li className="flex gap-3 text-slate-700">
+                    <span className="text-teal-600 font-bold flex-shrink-0">✓</span>
+                    <span>Third-party tested, GMP-certified, transparent sourcing</span>
+                  </li>
+                </ul>
+              </div>
 
-function Header() {
-  return (
-    <header className="header">
-      <div className="logo">
-        <div className="logo-mark" />
-        <div className="logo-text">Eonic</div>
-      </div>
-      <nav className="nav">
-        <a onClick={() => scrollToId("baseline")}>Baseline</a>
-        <a onClick={() => scrollToId("how-it-works")}>How it works</a>
-        <a onClick={() => scrollToId("why-eonic")}>Why Eonic</a>
-        <a onClick={() => scrollToId("roadmap")}>Roadmap</a>
-        <a onClick={() => scrollToId("faq")}>FAQ</a>
-      </nav>
-      <button
-        className="btn btn-primary nav-cta"
-        onClick={() => scrollToId("waitlist")}
-      >
-        Join waitlist
-      </button>
-    </header>
-  );
-}
+              {/* Differentiator 3 */}
+              <div className="bg-white border border-slate-200 rounded-xl p-8">
+                <h3 className="text-2xl font-semibold text-slate-900 mb-4">
+                  Built for the Skeptic
+                </h3>
+                <ul className="flex flex-col gap-3">
+                  <li className="flex gap-3 text-slate-700">
+                    <span className="text-teal-600 font-bold flex-shrink-0">✓</span>
+                    <span>We don't claim miracles. We support baseline stability.</span>
+                  </li>
+                  <li className="flex gap-3 text-slate-700">
+                    <span className="text-teal-600 font-bold flex-shrink-0">✓</span>
+                    <span>No disease claims, no hype language</span>
+                  </li>
+                  <li className="flex gap-3 text-slate-700">
+                    <span className="text-teal-600 font-bold flex-shrink-0">✓</span>
+                    <span>You're in control; we're a system, not a lifestyle brand</span>
+                  </li>
+                </ul>
+              </div>
 
-function SectionProblem() {
-  return (
-    <section className="section" id="problem">
-      <div className="section-header">
-        <div className="section-kicker">The gap</div>
-        <h2 className="section-title">
-          Most ambitious people run on coffee, chaos and guesswork.
-        </h2>
-        <p className="section-subtitle">
-          You already know supplements matter. But the stack is random, the
-          advice is fragmented, and managing it all quietly becomes its own
-          job.
-        </p>
-      </div>
-
-      <div className="problem-grid">
-        <div className="card">
-          <div className="card-title">DIY stacks that never stick</div>
-          <p className="card-body">
-            Half-used bottles, changing routines, no idea what is actually
-            working. You&apos;re experimenting, not running a protocol.
-          </p>
-        </div>
-        <div className="card">
-          <div className="card-title">Wellness marketing, under-dosed reality</div>
-          <p className="card-body">
-            Most products are built for margins or aesthetics, not outcomes.
-            Fairy-dust ingredients, confusing claims, no clear rationale.
-          </p>
-        </div>
-        <div className="card">
-          <div className="card-title">No one owns the 5–10% biochemical edge</div>
-          <p className="card-body">
-            Lifestyle is 90% of health. But the 5–10% biochemical edge from a
-            smart stack is real—and almost no one is running it properly.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function SectionBaseline() {
-  return (
-    <section className="section" id="baseline">
-      <div className="section-header">
-        <div className="section-kicker">The Eonic Baseline</div>
-        <h2 className="section-title">
-          A 90-day, pill-first health autopilot for operators.
-        </h2>
-        <p className="section-subtitle">
-          The Baseline is a done-for-you daily micro-stack. Minimal capsules,
-          maximal signal. Designed for urban knowledge workers who want to take
-          their biology seriously without becoming biohackers.
-        </p>
-      </div>
-
-      <div className="split">
-        <div>
-          <h3 style={{ fontSize: "1rem", marginBottom: 8 }}>
-            What you actually get
-          </h3>
-          <ul className="bullet-list">
-            <li>
-              <span className="bullet-dot" />
-              <span>
-                A sequenced AM / PM stack of essential, evidence-backed
-                compounds calibrated for India and your context.
-              </span>
-            </li>
-            <li>
-              <span className="bullet-dot" />
-              <span>
-                A 90-day protocol designed to stabilise energy, clean up sleep
-                inputs and support cognitive output.
-              </span>
-            </li>
-            <li>
-              <span className="bullet-dot" />
-              <span>
-                Clear instructions on what to take, when, and how to fit it into
-                your existing day with near-zero extra friction.
-              </span>
-            </li>
-          </ul>
-
-          <h3 style={{ fontSize: "1rem", margin: "16px 0 8px" }}>
-            What you don&apos;t have to do
-          </h3>
-          <ul className="bullet-list">
-            <li>
-              <span className="bullet-dot" />
-              <span>
-                No late-night rabbit holes on Reddit or YouTube about stacks and
-                "one weird tricks".
-              </span>
-            </li>
-            <li>
-              <span className="bullet-dot" />
-              <span>
-                No spreadsheet of 14 supplements you&apos;ll stop taking by week
-                three.
-              </span>
-            </li>
-            <li>
-              <span className="bullet-dot" />
-              <span>
-                No pretending pills can replace doctors, therapy or lifestyle.
-                We don&apos;t sell that story.
-              </span>
-            </li>
-          </ul>
-        </div>
-
-        <div className="card">
-          <div className="card-title">Design constraints we hold for you</div>
-          <p className="card-body">
-            Every decision in the Baseline is constrained by a few rules:
-          </p>
-          <ul className="bullet-list">
-            <li>
-              <span className="bullet-dot" />
-              <span>Minimum capsules, maximum effect per capsule.</span>
-            </li>
-            <li>
-              <span className="bullet-dot" />
-              <span>
-                Evidence-backed doses, no fairy-dusting. Either it&apos;s there
-                to move the needle, or it&apos;s not there.
-              </span>
-            </li>
-            <li>
-              <span className="bullet-dot" />
-              <span>
-                Designed to sit alongside a real life—late calls, travel,
-                family, imperfect sleep—instead of assuming a lab.
-              </span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function SectionHowItWorks() {
-  return (
-    <section className="section" id="how-it-works">
-      <div className="section-header">
-        <div className="section-kicker">How it works</div>
-        <h2 className="section-title">
-          From chaos to protocol in four simple moves.
-        </h2>
-        <p className="section-subtitle">
-          The Baseline is designed as a closed loop: we take in your context,
-          translate it into a micro-stack, and then refine it as we learn.
-        </p>
-      </div>
-
-      <div className="steps-grid">
-        <div className="card">
-          <div className="step-index">Step 1</div>
-          <div className="card-title">Onboard in minutes</div>
-          <p className="card-body">
-            Share goals, constraints, meds and any recent labs you already
-            have. No over-sharing, no interrogations.
-          </p>
-        </div>
-        <div className="card">
-          <div className="step-index">Step 2</div>
-          <div className="card-title">We design your Baseline</div>
-          <p className="card-body">
-            We map your inputs to a small, targeted stack and dosing schedule,
-            tuned for your work and recovery patterns.
-          </p>
-        </div>
-        <div className="card">
-          <div className="step-index">Step 3</div>
-          <div className="card-title">We ship and orchestrate</div>
-          <p className="card-body">
-            Your stack arrives with clear instructions and low-noise nudges via
-            the channels you already use.
-          </p>
-        </div>
-        <div className="card">
-          <div className="step-index">Step 4</div>
-          <div className="card-title">Review and refine</div>
-          <p className="card-body">
-            At weeks 4–6 and 12, we review how you&apos;re feeling and, where
-            relevant, labs and wearables—then tighten the protocol.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function SectionBenefits() {
-  return (
-    <section className="section" id="benefits">
-      <div className="section-header">
-        <div className="section-kicker">What to expect</div>
-        <h2 className="section-title">
-          Not miracles. A cleaner, more reliable baseline.
-        </h2>
-        <p className="section-subtitle">
-          We don&apos;t promise to cure disease or reverse aging. We aim for a
-          noticeable upgrade in how your days feel and how your input stack
-          looks.
-        </p>
-      </div>
-
-      <div className="benefits-grid">
-        <div className="card">
-          <div className="card-title">More stable energy</div>
-          <p className="card-body">
-            Fewer brutal crashes, less wired-but-tired. Your days feel less
-            random, more steady.
-          </p>
-        </div>
-        <div className="card">
-          <div className="card-title">Better sleep inputs</div>
-          <p className="card-body">
-            Easier wind-down, fewer 2 am wide-awake episodes, more mornings
-            where you actually feel restored.
-          </p>
-        </div>
-        <div className="card">
-          <div className="card-title">Clearer headspace</div>
-          <p className="card-body">
-            Less fog and low-grade inflammation, more days where your brain does
-            what you know it can do.
-          </p>
-        </div>
-        <div className="card">
-          <div className="card-title">Biology taken seriously</div>
-          <p className="card-body">
-            You go from "I&apos;ll figure this out later" to running a
-            real protocol for the 5–10% biochemical edge that compounds.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function SectionWhyDifferent() {
-  return (
-    <section className="section" id="why-eonic">
-      <div className="section-header">
-        <div className="section-kicker">Why Eonic</div>
-        <h2 className="section-title">
-          Built as a system, not a shelf of products.
-        </h2>
-        <p className="section-subtitle">
-          The world doesn&apos;t need another random supplement brand. It needs
-          an intelligent protocol that owns the biochemical 5–10%—and respects
-          your time.
-        </p>
-      </div>
-
-      <div className="split">
-        <div>
-          <h3 style={{ fontSize: "1rem", marginBottom: 8 }}>
-            What we optimise for
-          </h3>
-          <ul className="bullet-list">
-            <li>
-              <span className="bullet-dot" />
-              <span>Frictionless compliance: easy to take every single day.</span>
-            </li>
-            <li>
-              <span className="bullet-dot" />
-              <span>
-                Evidence-based, India-calibrated formulations—not US copy-paste.
-              </span>
-            </li>
-            <li>
-              <span className="bullet-dot" />
-              <span>
-                Protocol first, product second. The pills are actuators inside a
-                system that learns.
-              </span>
-            </li>
-            <li>
-              <span className="bullet-dot" />
-              <span>
-                Honesty as a feature: supplements are 5–10% of health. We&apos;ll
-                handle that slice properly and never pretend otherwise.
-              </span>
-            </li>
-          </ul>
-        </div>
-
-        <div className="card">
-          <div className="card-title">How we&apos;re different</div>
-          <p className="card-body">
-            Compared to:
-          </p>
-          <ul className="bullet-list">
-            <li>
-              <span className="bullet-dot" />
-              <span>
-                <strong>Random D2C brands:</strong> built for campaigns and
-                discounts. We&apos;re built for long-term protocols.
-              </span>
-            </li>
-            <li>
-              <span className="bullet-dot" />
-              <span>
-                <strong>DIY stacks:</strong> high effort, low signal. We
-                collapse the decision space into a clear Baseline.
-              </span>
-            </li>
-            <li>
-              <span className="bullet-dot" />
-              <span>
-                <strong>One-size-fits-all wellness advice:</strong> generic
-                checklists. We respect your context—work, family, risk, labs.
-              </span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function SectionFounder() {
-  return (
-    <section className="section" id="founder">
-      <div className="section-header">
-        <div className="section-kicker">Founder & ethos</div>
-        <h2 className="section-title">
-          Built by someone who lives this, not someone who discovered a niche.
-        </h2>
-        <p className="section-subtitle">
-          Eonic started as a private protocol for one family—then close friends,
-          then a quiet circle of operators. The public version is simply the
-          same care, packaged and scaled.
-        </p>
-      </div>
-
-      <div className="split">
-        <div className="founder-card">
-          <div className="founder-name">Aditya</div>
-          <div className="founder-role">
-            Founder, Eonic • Builder & investor, India-based
-          </div>
-          <p className="card-body">
-            I&apos;ve spent years helping companies grow and founders raise
-            capital, while running my own stack in the background—first for
-            myself, then for my partner Anu, and now for our son.
-          </p>
-          <p className="card-body">
-            Eonic exists because high-agency people keep asking the same
-            question: "I know I should do something about my biology, but I
-            don&apos;t have the cognition or time to manage a full protocol. Can
-            someone just do it properly for me?"
-          </p>
-          <p className="card-body">
-            This is that "someone". No hype, no shortcuts, no pretending
-            pills can save you. Just a system that respects your reality and the
-            science.
-          </p>
-        </div>
-
-        <div>
-          <h3 style={{ fontSize: "1rem", marginBottom: 8 }}>Ethos</h3>
-          <ul className="bullet-list">
-            <li>
-              <span className="bullet-dot" />
-              <span>Truth-first. If something doesn&apos;t work, we say so.</span>
-            </li>
-            <li>
-              <span className="bullet-dot" />
-              <span>
-                Anti-BS. No magical thinking, no borrowed lab coats, no
-                influencer-led formulations.
-              </span>
-            </li>
-            <li>
-              <span className="bullet-dot" />
-              <span>
-                Built for people who are already taking their lives seriously
-                and want their biology to match.
-              </span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function SectionRoadmap() {
-  return (
-    <section className="section" id="roadmap">
-      <div className="section-header">
-        <div className="section-kicker">Where this is going</div>
-        <h2 className="section-title">
-          The Baseline is the first layer of a much larger OS.
-        </h2>
-        <p className="section-subtitle">
-          The public product starts with a pill-first protocol. The internal map
-          goes a lot further: Eonic as the interface between your body,
-          interventions and intelligent orchestration.
-        </p>
-      </div>
-
-      <ul className="roadmap-list">
-        <li className="roadmap-item">
-          <span className="text-accent">Now ·</span> Eonic Baseline: stable,
-          pill-first protocol for high-agency people.
-        </li>
-        <li className="roadmap-item">
-          <span className="text-accent">Next ·</span> Deeper personalisation
-          using labs you already do and wearables you already wear.
-        </li>
-        <li className="roadmap-item">
-          <span className="text-accent">Later ·</span> An AI health agent that
-          sits between your data, your protocols and your real life—and quietly
-          keeps you on the best available path.
-        </li>
-      </ul>
-
-      <p className="section-subtitle">
-        We won&apos;t over-promise timelines. The Baseline is step one: a
-        tangible, near-term upgrade you can feel within weeks, that sets the
-        foundation for everything beyond.
-      </p>
-    </section>
-  );
-}
-
-function SectionFAQ() {
-  return (
-    <section className="section" id="faq">
-      <div className="section-header">
-        <div className="section-kicker">FAQ</div>
-        <h2 className="section-title">A few things you might be wondering.</h2>
-      </div>
-
-      <div className="faq-grid">
-        <div>
-          <div className="faq-question">Is this a replacement for my doctor?</div>
-          <div className="faq-answer">
-            No. Eonic is not a medical service and does not diagnose, treat or
-            cure disease. We operate in the 5–10% biochemical space that
-            supplements can influence and expect you to continue working with
-            your own clinicians.
-          </div>
-        </div>
-        <div>
-          <div className="faq-question">
-            Do you use exotic or experimental compounds?
-          </div>
-          <div className="faq-answer">
-            No. We start with well-studied, legal, evidence-backed nutrients and
-            compounds. No grey-market research chemicals or performance drugs.
-          </div>
-        </div>
-        <div>
-          <div className="faq-question">Is this vegetarian / vegan friendly?</div>
-          <div className="faq-answer">
-            The Baseline is designed with Indian dietary patterns in mind and
-            defaults to vegetarian-friendly formulations where possible. Specific
-            details will be shared before you confirm your cohort.
-          </div>
-        </div>
-        <div>
-          <div className="faq-question">Who is this not for?</div>
-          <div className="faq-answer">
-            If you&apos;re pregnant, dealing with serious illness, or on complex
-            medication regimens, this is not the right starting point. Eonic is
-            built first for otherwise-healthy adults who want to upgrade
-            performance and long-run healthspan.
-          </div>
-        </div>
-        <div>
-          <div className="faq-question">Will you guarantee specific results?</div>
-          <div className="faq-answer">
-            Biology is individual, so guarantees would be dishonest. We design
-            for high expected value: better energy stability, sleep inputs,
-            cognitive output and lab trends over time. We&apos;ll be explicit
-            about what we can and can&apos;t influence.
-          </div>
-        </div>
-        <div>
-          <div className="faq-question">When is the first public cohort?</div>
-          <div className="faq-answer">
-            We&apos;re assembling a small early cohort to run the first full
-            Baseline protocols. Join the waitlist and we&apos;ll share details
-            as soon as the next cohort opens.
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function SectionWaitlist() {
-  return (
-    <section className="section" id="waitlist">
-      <div className="section-header">
-        <div className="section-kicker">Early access</div>
-        <h2 className="section-title">
-          If you&apos;ve been meaning to take your biology seriously, start
-          here.
-        </h2>
-        <p className="section-subtitle">
-          Share a few details and we&apos;ll reach out as we put together the
-          first cohorts for Eonic Baseline. No spam, no daily emails—just
-          concrete next steps when we&apos;re ready.
-        </p>
-      </div>
-
-      <div className="form-card">
-        <form
-          className="form-row"
-          method="POST"
-          action="https://formspree.io/f/your-form-id"
-        >
-          {/* Replace the action URL with your chosen form backend or API */}
-          <div className="form-row form-row-inline">
-            <div style={{ flex: 1 }}>
-              <label className="label" htmlFor="name">
-                Name
-              </label>
-              <input
-                className="input"
-                id="name"
-                name="name"
-                type="text"
-                placeholder="Your name"
-                required
-              />
-            </div>
-            <div style={{ flex: 1 }}>
-              <label className="label" htmlFor="email">
-                Email
-              </label>
-              <input
-                className="input"
-                id="email"
-                name="email"
-                type="email"
-                placeholder="you@company.com"
-                required
-              />
+              {/* Differentiator 4 */}
+              <div className="bg-white border border-slate-200 rounded-xl p-8">
+                <h3 className="text-2xl font-semibold text-slate-900 mb-4">
+                  Just the Start
+                </h3>
+                <ul className="flex flex-col gap-3">
+                  <li className="flex gap-3 text-slate-700">
+                    <span className="text-teal-600 font-bold flex-shrink-0">✓</span>
+                    <span>Coming soon: integration with lab testing (blood work, microbiome)</span>
+                  </li>
+                  <li className="flex gap-3 text-slate-700">
+                    <span className="text-teal-600 font-bold flex-shrink-0">✓</span>
+                    <span>Wearable sync (sleep, HRV, movement data)</span>
+                  </li>
+                  <li className="flex gap-3 text-slate-700">
+                    <span className="text-teal-600 font-bold flex-shrink-0">✓</span>
+                    <span>This is version 1 of an OS upgrade, not a one-off product</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
+        </Container>
+      </Section>
 
-          <div>
-            <label className="label" htmlFor="context">
-              What best describes you? (optional)
-            </label>
-            <input
-              className="input"
-              id="context"
-              name="context"
-              type="text"
-              placeholder="e.g. Founder, operator, consultant, senior IC..."
-            />
+      {/* ============ WHO WE ARE ============ */}
+      <Section>
+        <Container>
+          <div className="py-20 lg:py-32">
+            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-12">
+              Built by people who care about this, not just profit from it
+            </h2>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+              <div className="lg:col-span-2">
+                <div className="flex flex-col gap-8 text-lg text-slate-700 leading-relaxed">
+                  <p>
+                    Eonic was built because we were frustrated. Most supplement brands are either hype-driven or clinical-to-the-point-of-cold. We wanted something honest: a protocol that works, explained clearly, with real people behind it.
+                  </p>
+
+                  <p>
+                    Our founder spent 10+ years in health tech and biotech. The team includes a nutritional biochemist, a physician, and people obsessed with clear communication. We use the Baseline ourselves. We've tested it with early cohorts. And we're building this with the long-term intention of making health data and supplementation actually <em>integrated</em>—something no one else is doing yet.
+                  </p>
+                </div>
+              </div>
+
+              <div className="lg:col-span-1">
+                <div className="bg-slate-100 rounded-xl aspect-square flex items-center justify-center border border-slate-200">
+                  <p className="text-center text-slate-400 text-sm">
+                    Founder photo <br />
+                    (optional)
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
+        </Container>
+      </Section>
 
-          <div>
-            <label className="label" htmlFor="notes">
-              Anything else you&apos;d like us to know? (optional)
-            </label>
-            <textarea
-              className="textarea"
-              id="notes"
-              name="notes"
-              placeholder="Current challenges, goals, constraints..."
-            />
-          </div>
+      {/* ============ ROADMAP ============ */}
+      <Section className="bg-slate-50 border-y border-slate-100">
+        <Container>
+          <div className="py-20 lg:py-32">
+            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 text-center mb-16">
+              This is just phase 1
+            </h2>
 
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: 12,
-              marginTop: 8
-            }}
-          >
-            <button className="btn btn-primary" type="submit">
-              Join the Baseline waitlist
-            </button>
-            <p className="form-note">
-              By submitting, you agree to us emailing you about Eonic. No third-party
-              sharing, ever.
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+              {/* Phase 1 */}
+              <div className="bg-white border border-slate-200 rounded-xl p-8 relative">
+                <div className="absolute -top-4 -left-4 w-8 h-8 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                  1
+                </div>
+                <h3 className="text-2xl font-semibold text-slate-900 mb-3 mt-2">
+                  Baseline
+                </h3>
+                <p className="text-slate-600 mb-4">
+                  A coherent 90-day protocol. Evidence-first. India-calibrated.
+                </p>
+                <p className="text-xs text-teal-600 font-semibold uppercase tracking-wide">Now</p>
+              </div>
+
+              {/* Phase 2 */}
+              <div className="bg-white border border-slate-200 rounded-xl p-8 relative">
+                <div className="absolute -top-4 -left-4 w-8 h-8 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                  2
+                </div>
+                <h3 className="text-2xl font-semibold text-slate-900 mb-3 mt-2">
+                  Testing
+                </h3>
+                <p className="text-slate-600 mb-4">
+                  Integrate blood work, microbiome, and other biomarkers. Your labs inform your stack.
+                </p>
+                <p className="text-xs text-teal-600 font-semibold uppercase tracking-wide">Q2/Q3 2025</p>
+              </div>
+
+              {/* Phase 3 */}
+              <div className="bg-white border border-slate-200 rounded-xl p-8 relative">
+                <div className="absolute -top-4 -left-4 w-8 h-8 bg-teal-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                  3
+                </div>
+                <h3 className="text-2xl font-semibold text-slate-900 mb-3 mt-2">
+                  AI OS
+                </h3>
+                <p className="text-slate-600 mb-4">
+                  Real-time integration: wearables (sleep, HRV, stress) + labs + behavior → AI-guided protocol updates.
+                </p>
+                <p className="text-xs text-teal-600 font-semibold uppercase tracking-wide">Q4 2025 onward</p>
+              </div>
+            </div>
+
+            <p className="text-center text-lg text-slate-700 max-w-2xl mx-auto">
+              Right now, supplements are static. Your health isn't. We're building a system that evolves with you.
             </p>
           </div>
-        </form>
-      </div>
-    </section>
-  );
-}
+        </Container>
+      </Section>
 
-function Footer() {
-  return (
-    <footer className="footer">
-      <div>© {new Date().getFullYear()} Eonic. All rights reserved.</div>
-      <div className="footer-links">
-        <a href="/terms">Terms</a>
-        <a href="/privacy">Privacy</a>
-      </div>
-    </footer>
+      {/* ============ FAQ ============ */}
+      <Section>
+        <Container>
+          <div className="py-20 lg:py-32">
+            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 text-center mb-16">
+              Frequently Asked Questions
+            </h2>
+
+            <div className="max-w-3xl mx-auto space-y-4">
+              <FAQItem
+                id="safety"
+                question="Is this safe? Do I need a doctor's permission?"
+                isExpanded={expandedFAQ === 'safety'}
+                onToggle={() => toggleFAQ('safety')}
+              >
+                Yes, the Baseline is safe for healthy adults. All ingredients are recognized, well-studied, and included at evidence-backed doses. If you have a medical condition, take medications, or are pregnant/nursing, consult your doctor first. We're also designing integration with healthcare providers so your doctor can see your Baseline data.
+              </FAQItem>
+
+              <FAQItem
+                id="medications"
+                question="Can I take this with my medications?"
+                isExpanded={expandedFAQ === 'medications'}
+                onToggle={() => toggleFAQ('medications')}
+              >
+                Generally, the Baseline ingredients (multivitamins, magnesium, omega-3s) don't interact with common medications. But individual interactions vary. We'll ask about your medications during intake, and we always recommend confirming with your doctor.
+              </FAQItem>
+
+              <FAQItem
+                id="vegan"
+                question="Is it vegetarian/vegan?"
+                isExpanded={expandedFAQ === 'vegan'}
+                onToggle={() => toggleFAQ('vegan')}
+              >
+                The base Baseline is vegan-friendly (plant-based omega-3, no animal-derived ingredients). We'll note any capsule or filler sourcing during intake.
+              </FAQItem>
+
+              <FAQItem
+                id="cost"
+                question="How much does it cost?"
+                isExpanded={expandedFAQ === 'cost'}
+                onToggle={() => toggleFAQ('cost')}
+              >
+                Baseline kits start at ₹3,500–4,500 for 90 days, depending on customization. That works out to ₹38–50/day—less than a coffee. We're finalizing pricing and will confirm in your intake.
+              </FAQItem>
+
+              <FAQItem
+                id="results"
+                question="What if I don't see changes in 90 days?"
+                isExpanded={expandedFAQ === 'results'}
+                onToggle={() => toggleFAQ('results')}
+              >
+                90 days is the standard because that's how long it takes for most biomarkers to shift. But changes vary (sleep improves in 2–3 weeks; energy takes 4–6; focus is often last). We'll track this in your review and adjust. If no changes, we offer a refund (conditions apply).
+              </FAQItem>
+
+              <FAQItem
+                id="notfor"
+                question="Who is this NOT for?"
+                isExpanded={expandedFAQ === 'notfor'}
+                onToggle={() => toggleFAQ('notfor')}
+              >
+                <ul className="flex flex-col gap-3">
+                  <li className="flex gap-3">
+                    <span className="text-slate-400 flex-shrink-0">•</span>
+                    <span>Pregnant or nursing (we'll have a separate protocol later)</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="text-slate-400 flex-shrink-0">•</span>
+                    <span>Active medical conditions (work with your doctor first)</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="text-slate-400 flex-shrink-0">•</span>
+                    <span>People looking for a "cure" (we support baseline; we don't treat disease)</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="text-slate-400 flex-shrink-0">•</span>
+                    <span>Anyone who won't take it daily (consistency is core)</span>
+                  </li>
+                </ul>
+              </FAQItem>
+
+              <FAQItem
+                id="duration"
+                question="How long do I take this?"
+                isExpanded={expandedFAQ === 'duration'}
+                onToggle={() => toggleFAQ('duration')}
+              >
+                The initial Baseline is 90 days. Many people continue because they feel the difference. Some adjust seasonally or based on life changes. It's your call.
+              </FAQItem>
+
+              <FAQItem
+                id="quality"
+                question="How do you ensure quality?"
+                isExpanded={expandedFAQ === 'quality'}
+                onToggle={() => toggleFAQ('quality')}
+              >
+                GMP-certified manufacturing, third-party testing for purity and potency, supply chain transparency. We publish test results (coming soon on the site). No shortcuts.
+              </FAQItem>
+
+              <FAQItem
+                id="doctors"
+                question="Do you work with doctors?"
+                isExpanded={expandedFAQ === 'doctors'}
+                onToggle={() => toggleFAQ('doctors')}
+              >
+                Yes, we're building integrations so your healthcare provider can access your Baseline protocol and data (with your consent). We're not replacing medical care; we're complementing it.
+              </FAQItem>
+            </div>
+          </div>
+        </Container>
+      </Section>
+
+      {/* ============ FINAL CTA ============ */}
+      <Section className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+        <Container>
+          <div className="py-20 lg:py-32">
+            <div className="max-w-2xl mx-auto text-center flex flex-col gap-12">
+              <div className="flex flex-col gap-6">
+                <h2 className="text-4xl lg:text-5xl font-bold text-white">
+                  Ready to put your baseline on autopilot?
+                </h2>
+                <p className="text-xl text-slate-100">
+                  Join the early cohort. 90 days to a more stable you.
+                </p>
+              </div>
+
+              <p className="text-base text-slate-300 leading-relaxed">
+                We're launching with a limited first cohort. Early members get access to the full protocol, weekly guidance and micro-adjustments, and a direct feedback loop to our team (your input shapes what we build next).
+              </p>
+
+              {/* Final CTA Form */}
+              <form
+                action="https://example.com/waitlist"
+                method="POST"
+                className="flex flex-col gap-4 max-w-md mx-auto w-full"
+              >
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="final-name" className="text-sm font-medium text-slate-200">
+                    Your name
+                  </label>
+                  <input
+                    id="final-name"
+                    type="text"
+                    name="name"
+                    placeholder="e.g., Priya"
+                    required
+                    className="px-4 py-3 border border-slate-600 rounded-lg text-base bg-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="final-email" className="text-sm font-medium text-slate-200">
+                    Email
+                  </label>
+                  <input
+                    id="final-email"
+                    type="email"
+                    name="email"
+                    placeholder="priya@example.com"
+                    required
+                    className="px-4 py-3 border border-slate-600 rounded-lg text-base bg-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="final-message" className="text-sm font-medium text-slate-200">
+                    Any questions? (optional)
+                  </label>
+                  <textarea
+                    id="final-message"
+                    name="message"
+                    placeholder="Tell us what's on your mind..."
+                    rows={3}
+                    className="px-4 py-3 border border-slate-600 rounded-lg text-base bg-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none"
+                  />
+                </div>
+
+                <Button type="submit" variant="primary" className="w-full mt-2">
+                  Join the Early Cohort
+                </Button>
+              </form>
+
+              <p className="text-xs text-slate-400">
+                We'll email you when the early cohort opens. No spam, ever.
+              </p>
+            </div>
+          </div>
+        </Container>
+      </Section>
+
+      {/* ============ FOOTER ============ */}
+      <footer className="bg-white border-t border-slate-200">
+        <Container>
+          <div className="py-12 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+            <div className="flex flex-col gap-2">
+              <p className="text-sm font-semibold text-slate-900">EONIC</p>
+              <p className="text-xs text-slate-500">Your baseline, handled.</p>
+            </div>
+
+            <div className="flex flex-col md:flex-row gap-8 md:gap-12">
+              <div className="flex flex-col gap-3">
+                <p className="text-xs font-semibold text-slate-700 uppercase tracking-wide">Links</p>
+                <ul className="flex flex-col gap-2">
+                  <li>
+                    <a href="/privacy" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
+                      Privacy Policy
+                    </a>
+                  </li>
+                  <li>
+                    <a href="/terms" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
+                      Terms of Service
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <p className="text-xs font-semibold text-slate-700 uppercase tracking-wide">Contact</p>
+                <p className="text-sm text-slate-600">hello@eonic.health</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="py-6 border-t border-slate-200 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <p className="text-xs text-slate-500">
+              © 2025 Eonic Health. All rights reserved.
+            </p>
+            <p className="text-xs text-slate-500">
+              Made with care, backed by science.
+            </p>
+          </div>
+        </Container>
+      </footer>
+    </main>
   );
 }
