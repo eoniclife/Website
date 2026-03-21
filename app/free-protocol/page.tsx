@@ -1,10 +1,10 @@
-export default function TermsPage() {
+export default function FreeProtocolPage() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-eonic-bg px-5 py-10">
       <section className="surface-panel max-w-2xl rounded-[28px] px-8 py-12 text-center">
-        <p className="font-display text-4xl italic text-eonic-text">Terms placeholder</p>
+        <p className="font-display text-4xl italic text-eonic-text">Free protocol stub</p>
         <p className="mt-4 text-lg leading-8 text-eonic-text-2">
-          Replace this page with launch-ready terms before the site goes live.
+          The supplement-first flow is implemented in V1. The exercise and nutrition mini-product remains a V2 stub.
         </p>
       </section>
     </main>
