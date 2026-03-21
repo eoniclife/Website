@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { AnchorHTMLAttributes, ComponentPropsWithoutRef, ReactNode } from "react";
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 type Variant = "primary" | "secondary" | "ghost";
@@ -12,7 +12,9 @@ interface BaseProps {
   children: ReactNode;
 }
 
-interface ButtonProps extends BaseProps, ComponentPropsWithoutRef<"button"> {
+type NativeButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children">;
+
+interface ButtonProps extends BaseProps, NativeButtonProps {
   href?: never;
 }
 
@@ -35,9 +37,9 @@ function classes(variant: Variant) {
 export function Button(props: ButtonProps | LinkProps) {
   const variant = props.variant ?? "primary";
   if ("href" in props) {
-    const { href, children, className } = props;
+    const { href, children, className, onClick } = props;
     return (
-      <Link href={href} className={cn(classes(variant), className)}>
+      <Link href={href} onClick={onClick} className={cn(classes(variant), className)}>
         {children}
       </Link>
     );
