@@ -1,0 +1,33 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "eonic-life",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-03-21",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "global_fetch_strictly_public"
+  ],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "eonic-life"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  },
+  "routes": [
+    {
+      "pattern": "eonic.life",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.eonic.life",
+      "custom_domain": true
+    }
+  ]
+}
