@@ -6,6 +6,18 @@ import { Button } from "@/components/shared/Button";
 import { useQuizStore } from "@/lib/quiz/store";
 import type { RecommendationResult } from "@/lib/quiz/types";
 
+interface CaptureResponse {
+  success: boolean;
+  userId?: string;
+  error?: string;
+}
+
+interface OrderIntentResponse {
+  success: boolean;
+  redirectUrl?: string;
+  error?: string;
+}
+
 export function EmailCapture({ recommendation }: { recommendation: RecommendationResult }) {
   const router = useRouter();
   const { sessionUuid, userId, setUserId } = useQuizStore();
@@ -40,9 +52,13 @@ export function EmailCapture({ recommendation }: { recommendation: Recommendatio
         }),
       });
 
-      const payload = await response.json();
+      const payload = (await response.json()) as CaptureResponse;
       if (!response.ok) {
         throw new Error(payload.error ?? "CAPTURE_FAILED");
+      }
+
+      if (!payload.userId) {
+        throw new Error("CAPTURE_FAILED");
       }
 
       setUserId(payload.userId);
@@ -88,9 +104,13 @@ export function EmailCapture({ recommendation }: { recommendation: Recommendatio
         }),
       });
 
-      const payload = await response.json();
+      const payload = (await response.json()) as OrderIntentResponse;
       if (!response.ok) {
         throw new Error(payload.error ?? "ORDER_INTENT_FAILED");
+      }
+
+      if (!payload.redirectUrl) {
+        throw new Error("ORDER_INTENT_FAILED");
       }
 
       router.push(payload.redirectUrl);
