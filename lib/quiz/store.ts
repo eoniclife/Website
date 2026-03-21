@@ -5,6 +5,7 @@ import { persist } from "zustand/middleware";
 import type { RecommendationResult, StoredAnswer } from "@/lib/quiz/types";
 
 interface QuizState {
+  hasHydrated: boolean;
   sessionUuid: string | null;
   answers: Record<string, StoredAnswer>;
   currentStep: string;
@@ -16,18 +17,21 @@ interface QuizState {
   setStep: (step: string) => void;
   setCompleted: (result: RecommendationResult) => void;
   setUserId: (userId: string) => void;
+  setHasHydrated: (hasHydrated: boolean) => void;
   resetQuiz: () => void;
 }
 
 export const useQuizStore = create<QuizState>()(
   persist(
     (set) => ({
+      hasHydrated: false,
       sessionUuid: null,
       answers: {},
       currentStep: "Q1",
       completed: false,
       recommendation: null,
       userId: null,
+      setHasHydrated: (hasHydrated) => set({ hasHydrated }),
       setSession: (uuid) => set({ sessionUuid: uuid }),
       setAnswer: (questionId, answer) =>
         set((state) => ({
@@ -38,6 +42,7 @@ export const useQuizStore = create<QuizState>()(
       setUserId: (userId) => set({ userId }),
       resetQuiz: () =>
         set({
+          hasHydrated: true,
           sessionUuid: null,
           answers: {},
           currentStep: "Q1",
@@ -49,6 +54,9 @@ export const useQuizStore = create<QuizState>()(
     {
       name: "eonic-quiz-state",
       version: 1,
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
       partialize: (state) => ({
         sessionUuid: state.sessionUuid,
         answers: state.answers,

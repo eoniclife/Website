@@ -17,9 +17,13 @@ export function QuizStepClient({ step }: { step: string }) {
   const router = useRouter();
   const hasCompletedLoading = useRef(false);
   const [direction, setDirection] = useState(1);
-  const { answers, currentStep, sessionUuid, setAnswer, setStep, setCompleted } = useQuizStore();
+  const { hasHydrated, answers, currentStep, sessionUuid, setAnswer, setStep, setCompleted } = useQuizStore();
 
   useEffect(() => {
+    if (!hasHydrated) {
+      return;
+    }
+
     if (!sessionUuid) {
       router.replace("/quiz");
       return;
@@ -31,7 +35,7 @@ export function QuizStepClient({ step }: { step: string }) {
     }
 
     setStep(step);
-  }, [router, sessionUuid, setStep, step]);
+  }, [hasHydrated, router, sessionUuid, setStep, step]);
 
   const question = questionsById[step];
   const selected = question ? answers[question.id] : undefined;
@@ -84,6 +88,7 @@ export function QuizStepClient({ step }: { step: string }) {
 
   return (
     <section className="min-h-screen bg-eonic-bg px-5 py-8 md:px-8 md:py-10">
+      {!hasHydrated ? null : (
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={step}
@@ -123,6 +128,7 @@ export function QuizStepClient({ step }: { step: string }) {
           {step === "LOADING" ? <LoadingScreen onComplete={handleLoadingComplete} /> : null}
         </motion.div>
       </AnimatePresence>
+      )}
     </section>
   );
 }

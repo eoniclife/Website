@@ -12,13 +12,23 @@ function createUuid() {
 
 export default function QuizEntryPage() {
   const router = useRouter();
-  const { sessionUuid, completed, currentStep, setSession, setStep, resetQuiz } = useQuizStore();
+  const { hasHydrated, sessionUuid, completed, recommendation, currentStep, setSession, setStep, resetQuiz } =
+    useQuizStore();
 
   useEffect(() => {
+    if (!hasHydrated) {
+      return;
+    }
+
+    if (completed && recommendation) {
+      router.replace("/protocol");
+      return;
+    }
+
     if (sessionUuid && !completed && currentStep !== "Q1") {
       router.replace(`/quiz/${currentStep}`);
     }
-  }, [completed, currentStep, router, sessionUuid]);
+  }, [completed, currentStep, hasHydrated, recommendation, router, sessionUuid]);
 
   async function handleBegin() {
     const nextSession = completed ? createUuid() : sessionUuid ?? createUuid();

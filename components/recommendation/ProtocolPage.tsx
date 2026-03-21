@@ -12,15 +12,19 @@ import { useQuizStore } from "@/lib/quiz/store";
 
 export function ProtocolPage() {
   const router = useRouter();
-  const { recommendation, completed } = useQuizStore();
+  const { hasHydrated, recommendation, completed } = useQuizStore();
 
   useEffect(() => {
+    if (!hasHydrated) {
+      return;
+    }
+
     if (!recommendation || !completed) {
       router.replace("/quiz");
     }
-  }, [completed, recommendation, router]);
+  }, [completed, hasHydrated, recommendation, router]);
 
-  if (!recommendation || !completed) {
+  if (!hasHydrated || !recommendation || !completed) {
     return null;
   }
 
