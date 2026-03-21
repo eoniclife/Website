@@ -23,6 +23,10 @@ interface LinkProps extends BaseProps {
   onClick?: AnchorHTMLAttributes<HTMLAnchorElement>["onClick"];
 }
 
+function isLinkProps(props: ButtonProps | LinkProps): props is LinkProps {
+  return typeof (props as LinkProps).href === "string";
+}
+
 function classes(variant: Variant) {
   const base =
     "inline-flex min-h-[52px] items-center justify-center rounded-button px-6 py-3 text-sm font-medium transition duration-200";
@@ -36,7 +40,7 @@ function classes(variant: Variant) {
 
 export function Button(props: ButtonProps | LinkProps) {
   const variant = props.variant ?? "primary";
-  if ("href" in props) {
+  if (isLinkProps(props)) {
     const { href, children, className, onClick } = props;
     return (
       <Link href={href} onClick={onClick} className={cn(classes(variant), className)}>
