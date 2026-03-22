@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { ProgressBar } from "@/components/quiz/ProgressBar";
 import type { TransitionContent } from "@/lib/quiz/types";
 
@@ -8,18 +7,11 @@ export function TransitionScreen({
   content,
   progress,
   onContinue,
-  autoAdvanceMs = 2500,
 }: {
   content: TransitionContent;
   progress: number;
   onContinue: () => void;
-  autoAdvanceMs?: number;
 }) {
-  useEffect(() => {
-    const timeout = window.setTimeout(onContinue, autoAdvanceMs);
-    return () => window.clearTimeout(timeout);
-  }, [autoAdvanceMs, onContinue]);
-
   return (
     <div className="mx-auto max-w-3xl">
       <ProgressBar value={progress} />
