@@ -9,7 +9,7 @@ export function ResearchPreview() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-8 max-w-2xl">
           <p className="font-mono text-sm uppercase tracking-[0.3em] text-eonic-gold">The research engine</p>
-          <h2 className="mt-3 font-display text-4xl text-eonic-text">No black boxes. Just ingredient-level transparency.</h2>
+          <h2 className="mt-3 font-display text-4xl text-eonic-text">You should be able to inspect the protocol, not just trust the branding.</h2>
         </div>
         <div className="grid gap-5 md:grid-cols-3">
           {featured.map((ingredient) => (

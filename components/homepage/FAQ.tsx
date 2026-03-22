@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 const questions = [
   ["Do I need bloodwork to start?", "No. The quiz is designed to give you a strong starting baseline without requiring bloodwork first."],
   ["What if I'm vegetarian?", "The quiz routes vegetarian users so B12 priority can be elevated in the final protocol."],
-  ["How is this different from buying supplements individually?", "The protocol combines a baseline stack, archetype layer, and module add-ons with a clear rationale instead of leaving you to self-assemble from generic products."],
-  ["What happens after I reserve?", "We&apos;re in early access. We follow up on WhatsApp within 24 hours to confirm the order manually and share payment details. Nothing is charged until you confirm."],
+  ["How is this different from buying supplements individually?", "You&apos;re not assembling a stack ingredient by ingredient. The protocol combines a foundation layer, your archetype layer, and targeted add-ons, with the rationale shown directly on the page."],
+  ["What happens after I reserve?", "We&apos;re in early access. We follow up on WhatsApp within 24 hours to confirm the order and share payment details. Nothing is charged until you confirm."],
   ["Is this safe if I'm on medication?", "If you&apos;re on medication or managing an existing condition, review the ingredients with your physician before starting any supplement regimen."],
 ];
 

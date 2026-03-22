@@ -5,7 +5,7 @@ const features = [
   "Personalized to your quiz results",
   "Free shipping across India",
   "Research references for every ingredient",
-  "Early-access cohort with manual order confirmation",
+  "Early-access cohort, confirmed manually",
 ];
 
 export function Pricing() {
@@ -23,7 +23,7 @@ export function Pricing() {
           Start your quiz — it&apos;s free
         </Button>
         <p className="mt-4 text-sm text-eonic-text-muted">
-          We&apos;ll confirm your order on WhatsApp before taking payment. Nothing is charged the moment you click.
+          We confirm your order on WhatsApp before taking payment. Nothing is charged the moment you click.
         </p>
       </div>
     </section>

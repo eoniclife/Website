@@ -2,17 +2,17 @@ const items = [
   {
     icon: "⌘",
     title: "Every ingredient, justified.",
-    body: "Not by marketing. By research. The protocol shows what is in your stack, why it is there, and what the research actually points to.",
+    body: "You see what is in the stack, why it is there, and what the research actually points to. No mystery blends. No vague promises.",
   },
   {
     icon: "⌬",
     title: "India-calibrated, not globally generic.",
-    body: "The baseline starts from the realities of urban Indian life instead of assuming a globally average micronutrient profile.",
+    body: "The baseline starts from the realities of urban Indian life rather than assuming a globally average diet, schedule, or micronutrient profile.",
   },
   {
     icon: "◎",
     title: "Adaptive quiz. One protocol.",
-    body: "We map energy, focus, stress, sleep, gut, and metabolic patterns, then build around what your answers specifically point to.",
+    body: "We look at energy, focus, stress, sleep, gut, and metabolic patterns, then build around what your answers specifically suggest is under strain.",
   },
 ];
 

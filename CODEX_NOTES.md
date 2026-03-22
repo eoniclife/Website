@@ -69,3 +69,16 @@
 - Implemented `/admin/pipeline` and `/admin/pipeline/[orderId]` as temporary internal ops pages.
 - Confirmed the live schema already includes `users.whatsapp_number`, so no schema change was needed.
 - Important: the admin pipeline pages are intentionally unauthenticated for this first pilot only and need auth before any real scale or broader internal sharing.
+
+## Homepage tone pass
+
+- Refreshed the homepage again after the factual update pass, this time for tone rather than product truth.
+- Main goal was to make the copy feel more premium and less like internal product documentation.
+- Updated:
+  - hero headline/subhead
+  - trust-anchor body copy
+  - how-it-works headline and step wording
+  - pricing reassurance copy
+  - FAQ phrasing
+  - research-preview headline
+- Claude should check whether the homepage now feels closer to the intended brand voice, especially the hero and trust sections.
