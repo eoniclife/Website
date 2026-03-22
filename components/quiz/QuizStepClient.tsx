@@ -153,6 +153,9 @@ export function QuizStepClient({ step }: { step: string }) {
     step === "TRIAGE_END" || step.startsWith("CLUSTER_INTRO_")
       ? getTransitionContent(step, triageSelections)
       : null;
+  const handleTransitionContinue = useCallback(() => {
+    advance(step);
+  }, [advance, step]);
 
   return (
     <section className="min-h-screen bg-eonic-bg px-5 py-8 md:px-8 md:py-10">
@@ -193,7 +196,7 @@ export function QuizStepClient({ step }: { step: string }) {
               <TransitionScreen
                 content={transitionContent}
                 progress={progress}
-                onContinue={() => advance(step)}
+                onContinue={handleTransitionContinue}
               />
             ) : null}
 

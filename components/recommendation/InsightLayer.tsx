@@ -137,8 +137,7 @@ export function InsightLayer({ recommendation }: { recommendation: Recommendatio
 
   return (
     <section className="rounded-[28px] border border-eonic-border bg-eonic-bg-2 px-7 py-8">
-      <p className="font-mono text-sm uppercase tracking-[0.3em] text-eonic-gold">What we found</p>
-      <div className="mt-5 space-y-6">
+      <div className="space-y-6">
         <div>
           <h2 className="font-display text-3xl text-eonic-text">What we found</h2>
           <p className="mt-3 text-base leading-8 text-eonic-text-2">{content.whatWeFound}</p>

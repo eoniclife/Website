@@ -55,3 +55,9 @@
 - I removed the older generic baseline/module ingredient blocks from `ProtocolPage.tsx` so the page does not show two competing ingredient systems.
 - Ingredients are deduped across groups. If an ingredient exists at both a general and more specific layer, the more specific layer wins.
 - `npm run build` passes after the change.
+
+## Minor polish follow-up
+
+- Stabilized the quiz transition timer path by passing a memoized `onContinue` callback into `TransitionScreen`.
+- Removed the duplicate mono `What we found` kicker from `InsightLayer` so the section does not repeat its own heading.
+- `npm run build` still passes after these edits.
