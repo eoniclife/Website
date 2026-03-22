@@ -61,3 +61,11 @@
 - Stabilized the quiz transition timer path by passing a memoized `onContinue` callback into `TransitionScreen`.
 - Removed the duplicate mono `What we found` kicker from `InsightLayer` so the section does not repeat its own heading.
 - `npm run build` still passes after these edits.
+
+## Pre-order confirmation + internal pipeline
+
+- Implemented `/shop?order=<id>` as a real reservation page backed by Supabase orders instead of the previous placeholder.
+- Added `POST /api/order/reserve` to move orders from `intent` to `reserved` and update the user's WhatsApp number when provided.
+- Implemented `/admin/pipeline` and `/admin/pipeline/[orderId]` as temporary internal ops pages.
+- Confirmed the live schema already includes `users.whatsapp_number`, so no schema change was needed.
+- Important: the admin pipeline pages are intentionally unauthenticated for this first pilot only and need auth before any real scale or broader internal sharing.

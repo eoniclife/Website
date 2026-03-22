@@ -30,6 +30,11 @@ export interface IngredientGroup {
   ingredients: ResolvedProtocolIngredient[];
 }
 
+export interface CondensedIngredientSummary {
+  items: ResolvedProtocolIngredient[];
+  remainingCount: number;
+}
+
 const foundationIngredients: ProtocolIngredientEntry[] = [
   {
     key: "vitamin-d3-k2",
@@ -429,4 +434,18 @@ export function getIngredientBreakdown(recommendation: RecommendationResult): In
   ];
 
   return groups.filter((group) => group.ingredients.length > 0);
+}
+
+export function getCondensedIngredientSummary(
+  recommendation: RecommendationResult,
+  maxItems = 5,
+): CondensedIngredientSummary {
+  const groups = getIngredientBreakdown(recommendation).filter((group) => group.kind !== "module");
+  const flattened = groups.flatMap((group) => group.ingredients);
+  const items = flattened.slice(0, maxItems);
+
+  return {
+    items,
+    remainingCount: Math.max(flattened.length - items.length, 0),
+  };
 }
