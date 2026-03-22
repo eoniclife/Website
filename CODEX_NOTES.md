@@ -44,3 +44,14 @@
 
 - The spec says each cluster has 5 anchor questions + 1 probe, but the gut section also moves the diet question into shared `QDIET`.
 - To avoid duplicating diet capture, the implementation treats `QDIET` as shared and keeps the gut cluster at 4 anchors + 1 probe. The adaptive sequence and scoring are built around that interpretation.
+
+## Protocol ingredient transparency layer
+
+- Implemented a new authored ingredient resolver in `lib/protocol/ingredients.ts` and rendered it through `components/recommendation/IngredientBreakdown.tsx`.
+- The protocol page now shows:
+  - Foundation ingredients that apply to every stack
+  - Archetype-specific ingredients
+  - Module-specific add-ons for the primary and secondary modules
+- I removed the older generic baseline/module ingredient blocks from `ProtocolPage.tsx` so the page does not show two competing ingredient systems.
+- Ingredients are deduped across groups. If an ingredient exists at both a general and more specific layer, the more specific layer wins.
+- `npm run build` passes after the change.

@@ -5,11 +5,9 @@ import { useRouter } from "next/navigation";
 import { Nav } from "@/components/shared/Nav";
 import { ArchetypeCard } from "@/components/recommendation/ArchetypeCard";
 import { EmailCapture } from "@/components/recommendation/EmailCapture";
+import { IngredientBreakdown } from "@/components/recommendation/IngredientBreakdown";
 import { InsightLayer } from "@/components/recommendation/InsightLayer";
-import { ModuleSection } from "@/components/recommendation/ModuleSection";
-import { baseIngredients } from "@/lib/recommendation/ingredients";
 import { archetypes } from "@/lib/recommendation/archetypes";
-import { modules } from "@/lib/recommendation/modules";
 import { useQuizStore } from "@/lib/quiz/store";
 
 export function ProtocolPage() {
@@ -31,9 +29,6 @@ export function ProtocolPage() {
   }
 
   const archetype = archetypes[recommendation.archetype] ?? archetypes.FOUNDATION_BUILDER;
-  const activeModules = [recommendation.primaryModule, recommendation.secondaryModule]
-    .filter(Boolean)
-    .map((moduleId) => modules[moduleId as string]);
 
   return (
     <main className="min-h-screen bg-eonic-bg px-5 py-10 md:px-8">
@@ -45,22 +40,8 @@ export function ProtocolPage() {
           <p className="max-w-3xl text-lg leading-8 text-eonic-text-2">{archetype.description}</p>
         </header>
 
-        <ModuleSection
-          title="Your Eonic Baseline"
-          subhead="Everyone starts here. This is what your biology needs regardless of everything else."
-          ingredients={baseIngredients}
-        />
-
-        {activeModules.map((module) => (
-          <ModuleSection
-            key={module.id}
-            title={module.name}
-            subhead={`Based on your answers, we've added ${module.name} to your protocol.`}
-            ingredients={module.ingredients}
-          />
-        ))}
-
         <InsightLayer recommendation={recommendation} />
+        <IngredientBreakdown recommendation={recommendation} />
         <ArchetypeCard name={archetype.name} description={archetype.description} />
         <EmailCapture recommendation={recommendation} />
         <button
