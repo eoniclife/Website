@@ -5,7 +5,7 @@ const features = [
   "Personalized to your quiz results",
   "Free shipping across India",
   "Research references for every ingredient",
-  "Cancel after your first protocol — no commitment required",
+  "Early-access cohort with manual order confirmation",
 ];
 
 export function Pricing() {
@@ -22,7 +22,9 @@ export function Pricing() {
         <Button href="/quiz" className="mt-8">
           Start your quiz — it&apos;s free
         </Button>
-        <p className="mt-4 text-sm text-eonic-text-muted">Your protocol renews every 90 days. We&apos;ll remind you 10 days before.</p>
+        <p className="mt-4 text-sm text-eonic-text-muted">
+          We&apos;ll confirm your order on WhatsApp before taking payment. Nothing is charged the moment you click.
+        </p>
       </div>
     </section>
   );

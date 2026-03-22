@@ -8,12 +8,12 @@ export function Hero() {
         <div className="space-y-8">
           <div className="space-y-5">
             <h1 className="max-w-3xl font-display text-5xl italic leading-tight text-balance text-eonic-text md:text-7xl">
-              No health noise.
+              Know what&apos;s happening.
               <br />
-              Just health outcomes.
+              Build the right stack.
             </h1>
             <p className="max-w-2xl text-lg leading-8 text-eonic-text-2 md:text-xl">
-              A 90-day supplement protocol built around your biology, not a generic formula designed for everyone.
+              An adaptive quiz that turns your answers into a 90-day supplement protocol, with the ingredients and rationale laid out clearly.
             </p>
           </div>
           <div className="flex flex-col gap-4 sm:flex-row">
@@ -22,7 +22,7 @@ export function Hero() {
               See what&apos;s in it
             </Button>
           </div>
-          <p className="text-sm text-eonic-text-muted">Takes 4 minutes. No account required.</p>
+          <p className="text-sm text-eonic-text-muted">Usually takes 2–4 minutes. No account required.</p>
         </div>
 
         <div className="relative min-h-[360px] rounded-[28px] border border-eonic-border bg-[radial-gradient(circle_at_25%_25%,rgba(0,201,167,0.16),transparent_24%),radial-gradient(circle_at_75%_35%,rgba(201,168,76,0.16),transparent_18%),linear-gradient(180deg,rgba(17,21,32,0.9),rgba(10,13,18,0.98))] shadow-glow-teal">
@@ -33,7 +33,7 @@ export function Hero() {
           <div className="absolute bottom-8 left-8 right-8 flex items-center justify-between rounded-card border border-eonic-border bg-eonic-bg/70 px-4 py-3">
             <div>
               <div className="font-mono text-xs uppercase tracking-[0.3em] text-eonic-gold">Research Engine</div>
-              <div className="mt-1 text-sm text-eonic-text-2">Adaptive protocol assembly in progress</div>
+              <div className="mt-1 text-sm text-eonic-text-2">Adaptive quiz routing with ingredient-level protocol logic</div>
             </div>
             <div className="h-2 w-24 overflow-hidden rounded-full bg-eonic-border">
               <div className="h-full w-2/3 rounded-full bg-eonic-teal" />

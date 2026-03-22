@@ -2,7 +2,7 @@ const items = [
   {
     icon: "⌘",
     title: "Every ingredient, justified.",
-    body: "Not by marketing. By research. Every compound in your protocol links to the studies behind it, with plain English first and full citation if you want it.",
+    body: "Not by marketing. By research. The protocol shows what is in your stack, why it is there, and what the research actually points to.",
   },
   {
     icon: "⌬",
@@ -11,8 +11,8 @@ const items = [
   },
   {
     icon: "◎",
-    title: "36 questions. One protocol.",
-    body: "We map energy, focus, stress, sleep, and metabolic patterns, then build around what your biology specifically needs.",
+    title: "Adaptive quiz. One protocol.",
+    body: "We map energy, focus, stress, sleep, gut, and metabolic patterns, then build around what your answers specifically point to.",
   },
 ];
 
