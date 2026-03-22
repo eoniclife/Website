@@ -19,5 +19,5 @@ export function isValidTime(str: string): boolean {
 }
 
 export function isValidQuestionId(str: string): boolean {
-  return /^Q([1-9]|[12]\d|3[0-6])$/.test(str);
+  return /^Q(?:T[123]|E(?:[1-5]|P)|F(?:[1-5]|P)|S(?:[1-5]|P|L(?:[1-5]|P))|G(?:[1-4]|P)|M(?:[1-5]|P)|DIET)$/.test(str);
 }

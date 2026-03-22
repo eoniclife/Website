@@ -7,6 +7,7 @@ import type { QuizQuestion, StoredAnswer } from "@/lib/quiz/types";
 interface QuestionCardProps {
   question: QuizQuestion;
   questionIndex: number;
+  questionTotal: number;
   progress: number;
   selected?: StoredAnswer;
   onBack: () => void;
@@ -16,6 +17,7 @@ interface QuestionCardProps {
 export function QuestionCard({
   question,
   questionIndex,
+  questionTotal,
   progress,
   selected,
   onBack,
@@ -33,7 +35,7 @@ export function QuestionCard({
         >
           ←
         </button>
-        <p className="text-sm text-eonic-text-muted">Q{questionIndex} of 36</p>
+        <p className="text-sm text-eonic-text-muted">Q{questionIndex} of {questionTotal}</p>
       </div>
 
       <div className="mt-12">
@@ -50,6 +52,7 @@ export function QuestionCard({
                 text: option.text,
                 score: option.score ?? 0,
                 flags: option.flag ? [option.flag] : undefined,
+                dimensionOverrides: option.dimensionOverrides,
               }}
               selected={selected?.id === option.id}
               onSelect={onAnswer}

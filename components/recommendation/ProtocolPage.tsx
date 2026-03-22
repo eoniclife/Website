@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Nav } from "@/components/shared/Nav";
 import { ArchetypeCard } from "@/components/recommendation/ArchetypeCard";
 import { EmailCapture } from "@/components/recommendation/EmailCapture";
+import { InsightLayer } from "@/components/recommendation/InsightLayer";
 import { ModuleSection } from "@/components/recommendation/ModuleSection";
 import { baseIngredients } from "@/lib/recommendation/ingredients";
 import { archetypes } from "@/lib/recommendation/archetypes";
@@ -59,6 +60,7 @@ export function ProtocolPage() {
           />
         ))}
 
+        <InsightLayer recommendation={recommendation} />
         <ArchetypeCard name={archetype.name} description={archetype.description} />
         <EmailCapture recommendation={recommendation} />
         <button

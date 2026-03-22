@@ -25,7 +25,7 @@ export default function QuizEntryPage() {
       return;
     }
 
-    if (sessionUuid && !completed && currentStep !== "Q1") {
+    if (sessionUuid && !completed && currentStep !== "QT1") {
       router.replace(`/quiz/${currentStep}`);
     }
   }, [completed, currentStep, hasHydrated, recommendation, router, sessionUuid]);
@@ -38,7 +38,7 @@ export default function QuizEntryPage() {
     }
 
     setSession(nextSession);
-    setStep("Q1");
+    setStep("QT1");
 
     try {
       await createSession(nextSession);
@@ -46,7 +46,7 @@ export default function QuizEntryPage() {
       console.error(error);
     }
 
-    router.push("/quiz/Q1");
+    router.push("/quiz/QT1");
   }
 
   return (
@@ -56,7 +56,7 @@ export default function QuizEntryPage() {
           Let&apos;s understand how your body actually functions.
         </p>
         <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-eonic-text-2">
-          36 questions. Honest answers only. We&apos;re building your protocol as you go.
+          A few focused questions. Honest answers only. Most people finish in under 3 minutes.
         </p>
         <Button className="mt-10" onClick={handleBegin}>
           Begin →

@@ -32,6 +32,7 @@ export async function saveAnswerToDb(sessionUuid: string, questionId: string, an
       answerText: answer.text,
       score: answer.score,
       flags: answer.flags,
+      dimensionOverrides: answer.dimensionOverrides,
     }),
   });
 

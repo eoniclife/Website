@@ -1,3 +1,4 @@
+import type { DimensionScores } from "@/lib/quiz/types";
 import { createServerClient } from "@/lib/supabase/server";
 import { failure, parseJson, success } from "@/lib/api";
 import { isValidQuestionId, isValidScore, isValidUUID } from "@/lib/validation";
@@ -9,6 +10,7 @@ interface RequestBody {
   answerText: string;
   score: 0 | 1 | 2;
   flags?: string[];
+  dimensionOverrides?: Partial<DimensionScores>;
 }
 
 export async function POST(request: Request) {
@@ -41,6 +43,7 @@ export async function POST(request: Request) {
         text: body.answerText,
         score: body.score,
         flags: body.flags,
+        dimensionOverrides: body.dimensionOverrides,
       },
     };
 

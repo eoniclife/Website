@@ -1,40 +1,11 @@
-import type { DimensionScores, RecommendationResult, StoredAnswer } from "@/lib/quiz/types";
-
-export const QUESTION_WEIGHTS: Record<string, Partial<DimensionScores>> = {
-  Q4: { energy: 1 },
-  Q5: { energy: 2, metabolic: 1 },
-  Q6: { energy: 1 },
-  Q7: { energy: 1, metabolic: 1 },
-  Q8: { energy: 2, sleep: 1 },
-  Q9: { energy: 1 },
-  Q10: { energy: 2 },
-  Q11: { focus: 2 },
-  Q12: { focus: 2 },
-  Q13: { focus: 1 },
-  Q14: { focus: 2 },
-  Q15: { focus: 1 },
-  Q16: { focus: 2 },
-  Q17: { stress: 2 },
-  Q18: { stress: 2 },
-  Q19: { stress: 1 },
-  Q20: { stress: 1 },
-  Q21: { stress: 2 },
-  Q22: { stress: 1, sleep: 1 },
-  Q23: { stress: 2 },
-  Q24: { sleep: 2 },
-  Q25: { sleep: 2 },
-  Q26: { sleep: 1, stress: 1 },
-  Q27: { sleep: 1 },
-  Q28: { sleep: 2 },
-  Q29: { sleep: 1 },
-  Q30: { metabolic: 2 },
-  Q31: { gut: 2 },
-  Q32: {},
-  Q33: { metabolic: 1 },
-  Q34: { metabolic: 1 },
-  Q35: { recovery: 2 },
-  Q36: { gut: 1 },
-};
+import { questionsById } from "@/lib/quiz/questions";
+import type {
+  DimensionMaxScores,
+  DimensionScores,
+  RecommendationResult,
+  StoredAnswer,
+  TriageSelections,
+} from "@/lib/quiz/types";
 
 export const MODULE_SCORE_KEYS: Record<string, keyof DimensionScores> = {
   MODULE_A_FOCUS: "focus",
@@ -63,6 +34,11 @@ export const ARCHETYPE_MAP: Record<string, string> = {
   "MODULE_D_GUT|MODULE_E_RECOVERY": "SYSTEM_RESET",
 };
 
+const THRESHOLD_RATIO = 0.35;
+const DUAL_RATIO = 0.8;
+const TRIAGE_DIMENSIONS = new Set(["energy", "focus", "stress", "sleep", "gut", "metabolic"]);
+const PROBE_IDS = new Set(["QEP", "QFP", "QSP", "QSLP", "QGP", "QMP"]);
+
 export function emptyScores(): DimensionScores {
   return {
     energy: 0,
@@ -75,39 +51,88 @@ export function emptyScores(): DimensionScores {
   };
 }
 
-export function calculateScores(answers: Record<string, Pick<StoredAnswer, "score">>): DimensionScores {
-  const scores = emptyScores();
+function getMaxOverrides(questionId: string) {
+  const question = questionsById[questionId];
+  const maxOverrides = emptyScores();
 
-  for (const [questionId, answer] of Object.entries(answers)) {
-    const weights = QUESTION_WEIGHTS[questionId];
-    if (!weights || answer.score === undefined) {
+  if (!question) {
+    return maxOverrides;
+  }
+
+  for (const option of question.options) {
+    if (!option.dimensionOverrides) {
       continue;
     }
 
-    for (const [dimension, weight] of Object.entries(weights) as [keyof DimensionScores, number][]) {
-      scores[dimension] += answer.score * weight;
+    for (const [dimension, value] of Object.entries(option.dimensionOverrides) as [keyof DimensionScores, number][]) {
+      maxOverrides[dimension] = Math.max(maxOverrides[dimension], value);
     }
   }
 
-  return scores;
+  return maxOverrides;
 }
 
-export function determineModules(scores: DimensionScores, answers: Record<string, Partial<StoredAnswer>>) {
-  const isVegetarian = answers.Q32?.id === "vegetarian";
+export function calculateScores(answers: Record<string, StoredAnswer>): {
+  scores: DimensionScores;
+  maxScores: DimensionMaxScores;
+  probeScores: DimensionScores;
+} {
+  const scores = emptyScores();
+  const maxScores = emptyScores();
+  const probeScores = emptyScores();
+
+  for (const [questionId, answer] of Object.entries(answers)) {
+    const question = questionsById[questionId];
+    if (!question) {
+      continue;
+    }
+
+    if (answer.dimensionOverrides) {
+      const maxOverrides = getMaxOverrides(questionId);
+
+      for (const [dimension, value] of Object.entries(answer.dimensionOverrides) as [keyof DimensionScores, number][]) {
+        scores[dimension] += value;
+        if (PROBE_IDS.has(questionId)) {
+          probeScores[dimension] += value;
+        }
+      }
+
+      for (const [dimension, value] of Object.entries(maxOverrides) as [keyof DimensionScores, number][]) {
+        maxScores[dimension] += value;
+      }
+
+      continue;
+    }
+
+    const weights = question.weights ?? {};
+    for (const [dimension, weight] of Object.entries(weights) as [keyof DimensionScores, number][]) {
+      scores[dimension] += answer.score * weight;
+      maxScores[dimension] += 2 * weight;
+    }
+  }
+
+  return { scores, maxScores, probeScores };
+}
+
+export function determineModules(scores: DimensionScores, maxScores: DimensionMaxScores, answers: Record<string, Partial<StoredAnswer>>) {
+  const isVegetarian = answers.QDIET?.flags?.includes("vegetarian") ?? false;
   const modules = Object.entries(MODULE_SCORE_KEYS)
-    .map(([moduleId, key]) => ({ moduleId, score: scores[key] }))
-    .sort((a, b) => b.score - a.score);
+    .map(([moduleId, key]) => ({
+      moduleId,
+      score: scores[key],
+      ratio: maxScores[key] > 0 ? scores[key] / maxScores[key] : 0,
+    }))
+    .sort((a, b) => b.ratio - a.ratio);
 
   const top = modules[0];
   const second = modules[1];
-  const threshold = 4;
-  const dualRatio = 0.8;
 
-  if (!top || top.score < threshold) {
+  if (!top || top.ratio < THRESHOLD_RATIO) {
     return { primary: null, secondary: null, isVegetarian };
   }
 
-  const hasDual = second && second.score >= threshold && second.score >= top.score * dualRatio;
+  const hasDual =
+    !!second && second.ratio >= THRESHOLD_RATIO && second.ratio >= top.ratio * DUAL_RATIO;
 
   return {
     primary: top.moduleId,
@@ -121,13 +146,24 @@ export function assignArchetype(primary: string | null, secondary: string | null
   return ARCHETYPE_MAP[`${first}|${second}`] ?? "FOUNDATION_BUILDER";
 }
 
+export function extractTriageSelections(answers: Record<string, StoredAnswer>): TriageSelections {
+  return answers.QT3?.flags ?? [];
+}
+
 export function buildRecommendation(answers: Record<string, StoredAnswer>): RecommendationResult {
-  const scores = calculateScores(answers);
-  const { primary, secondary, isVegetarian } = determineModules(scores, answers);
+  const triageSelections = extractTriageSelections(answers);
+  const { scores, maxScores, probeScores } = calculateScores(answers);
+  const { primary, secondary, isVegetarian } = determineModules(scores, maxScores, answers);
   const archetype = assignArchetype(primary, secondary);
+  const flaggedDimensions = new Set(triageSelections.filter((selection) => TRIAGE_DIMENSIONS.has(selection)));
+  const hiddenDimensions = (Object.entries(probeScores) as [keyof DimensionScores, number][])
+    .filter(([dimension, score]) => score >= 1 && !flaggedDimensions.has(dimension))
+    .map(([dimension]) => dimension);
 
   return {
     scores,
+    hiddenDimensions,
+    triageSelections,
     archetype,
     primaryModule: primary,
     secondaryModule: secondary,
