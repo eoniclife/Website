@@ -5,7 +5,7 @@ export function ResearchPreview() {
   const featured = baseIngredients.slice(0, 3);
 
   return (
-    <section className="px-5 py-16 md:px-8">
+    <section id="science" className="px-5 py-16 md:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="mb-8 max-w-2xl">
           <p className="font-mono text-sm uppercase tracking-[0.3em] text-eonic-gold">The research engine</p>

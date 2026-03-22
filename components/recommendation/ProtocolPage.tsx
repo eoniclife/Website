@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Nav } from "@/components/shared/Nav";
 import { ArchetypeCard } from "@/components/recommendation/ArchetypeCard";
 import { EmailCapture } from "@/components/recommendation/EmailCapture";
 import { ModuleSection } from "@/components/recommendation/ModuleSection";
@@ -35,7 +36,8 @@ export function ProtocolPage() {
 
   return (
     <main className="min-h-screen bg-eonic-bg px-5 py-10 md:px-8">
-      <div className="mx-auto max-w-5xl space-y-10">
+      <Nav />
+      <div className="mx-auto max-w-5xl space-y-10 pt-6">
         <header className="space-y-5">
           <p className="font-mono text-sm uppercase tracking-[0.3em] text-eonic-gold">Your Eonic protocol</p>
           <h1 className="font-display text-5xl text-eonic-text">{archetype.name}</h1>
@@ -59,6 +61,15 @@ export function ProtocolPage() {
 
         <ArchetypeCard name={archetype.name} description={archetype.description} />
         <EmailCapture recommendation={recommendation} />
+        <button
+          onClick={() => {
+            useQuizStore.getState().resetQuiz();
+            router.push("/quiz");
+          }}
+          className="mx-auto block text-sm text-eonic-text-muted transition-colors hover:text-eonic-text-2"
+        >
+          Retake the quiz
+        </button>
       </div>
     </main>
   );

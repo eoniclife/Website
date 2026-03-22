@@ -7,6 +7,7 @@ import { recordStateEvent } from "@/lib/state-events";
 
 interface RequestBody {
   sessionUuid: string;
+  clientAnswers?: Record<string, StoredAnswer>;
 }
 
 export async function POST(request: Request) {
@@ -28,11 +29,16 @@ export async function POST(request: Request) {
     }
 
     const rawAnswers = (session.raw_answers ?? {}) as Record<string, StoredAnswer>;
-    if (Object.keys(rawAnswers).length === 0) {
+    const answersToScore =
+      Object.keys(rawAnswers).length >= 36
+        ? rawAnswers
+        : { ...(body.clientAnswers ?? {}), ...rawAnswers };
+
+    if (Object.keys(answersToScore).length === 0) {
       return failure("SESSION_INCOMPLETE", 400);
     }
 
-    const result = buildRecommendation(rawAnswers);
+    const result = buildRecommendation(answersToScore);
 
     const { error: updateError } = await client
       .from("quiz_sessions")

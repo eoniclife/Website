@@ -45,7 +45,7 @@ export async function getRecommendation(sessionUuid: string, answers: Record<str
     const response = await fetch("/api/quiz/complete", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ sessionUuid }),
+      body: JSON.stringify({ sessionUuid, clientAnswers: answers }),
     });
 
     if (!response.ok) {
