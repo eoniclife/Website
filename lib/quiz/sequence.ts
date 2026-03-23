@@ -59,16 +59,10 @@ export function buildAdaptiveSequence(triageSelections: TriageSelections): strin
     sequence.push(clusterIntroId(cluster));
 
     const questionIds = [...CLUSTER_QUESTION_IDS[cluster]];
-    if (cluster === "metabolic" && selectedClusters.includes("gut")) {
-      const mergedIndex = questionIds.indexOf("QM1");
-      if (mergedIndex !== -1) {
-        questionIds.splice(mergedIndex, 1, "QG2");
-      }
-    }
 
     if (cluster === "gut" && selectedClusters.includes("metabolic")) {
       const mergedIndex = questionIds.indexOf("QG2");
-      if (mergedIndex !== -1 && sequence.includes("QG2")) {
+      if (mergedIndex !== -1) {
         questionIds.splice(mergedIndex, 1);
       }
     }
