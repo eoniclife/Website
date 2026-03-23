@@ -32,7 +32,7 @@ export function Nav() {
           <Link href="/shop" className="text-sm text-eonic-text-2 transition hover:text-eonic-text">
             Shop
           </Link>
-          <Link href="#science" className="text-sm text-eonic-text-2 transition hover:text-eonic-text">
+          <Link href="/science" className="text-sm text-eonic-text-2 transition hover:text-eonic-text">
             The Science
           </Link>
           <Button href="/quiz">Start Quiz</Button>
@@ -54,7 +54,7 @@ export function Nav() {
             <Link href="/shop" onClick={() => setOpen(false)} className="text-eonic-text-2">
               Shop
             </Link>
-            <Link href="#science" onClick={() => setOpen(false)} className="text-eonic-text-2">
+            <Link href="/science" onClick={() => setOpen(false)} className="text-eonic-text-2">
               The Science
             </Link>
             <Button href="/quiz" className="w-full" onClick={() => setOpen(false)}>

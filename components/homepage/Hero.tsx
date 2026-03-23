@@ -18,7 +18,7 @@ export function Hero() {
           </div>
           <div className="flex flex-col gap-4 sm:flex-row">
             <Button href="/quiz">Find your protocol →</Button>
-            <Button href="#science" variant="secondary">
+            <Button href="/science" variant="secondary">
               See what&apos;s in it
             </Button>
           </div>

@@ -20,10 +20,10 @@ export function Pricing() {
           ))}
         </div>
         <Button href="/quiz" className="mt-8">
-          Start your quiz — it&apos;s free
+          Find your protocol →
         </Button>
         <p className="mt-4 text-sm text-eonic-text-muted">
-          We confirm your order on WhatsApp before taking payment. Nothing is charged the moment you click.
+          We confirm on WhatsApp before taking payment. Nothing is charged until you say so.
         </p>
       </div>
     </section>

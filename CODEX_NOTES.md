@@ -82,3 +82,15 @@
   - FAQ phrasing
   - research-preview headline
 - Claude should check whether the homepage now feels closer to the intended brand voice, especially the hero and trust sections.
+
+## Homepage copy corrections + science page
+
+- Applied the latest surgical homepage copy corrections exactly where requested:
+  - `TrustAnchors.tsx`
+  - `HowItWorks.tsx`
+  - `Pricing.tsx`
+  - `FAQ.tsx`
+- Added a new standalone `/science` page at `app/science/page.tsx` with the full inline section structure from the brief.
+- Updated nav and hero science links to point to `/science` instead of the homepage anchor.
+- Small spec note: the brief says not to touch any files except the homepage copy files, but Part 2 also explicitly required `Nav.tsx` and `Hero.tsx` link updates. I implemented those because they were necessary for `/science` to be reachable from the intended entry points.
+- `npm run build` passes after the changes.

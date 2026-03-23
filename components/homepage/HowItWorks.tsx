@@ -1,7 +1,7 @@
 const steps = [
   ["01", "Take the adaptive quiz", "Usually 2–4 minutes, depending on what your answers point to."],
-  ["02", "See your protocol", "Your archetype, your modules, and the ingredients that made the cut."],
-  ["03", "Reserve your first 90-day stack", "AM strip plus PM sachet, with the price and next step stated clearly."],
+  ["02", "See your protocol", "Your archetype, your modules, and the ingredients selected for your specific pattern."],
+  ["03", "Reserve your first 90-day stack", "AM strip plus PM sachet. ₹3,999 for 90 days. No payment until you confirm on WhatsApp."],
   ["04", "We confirm personally", "For this first cohort, we follow up on WhatsApp within 24 hours to complete the handoff."],
 ];
 

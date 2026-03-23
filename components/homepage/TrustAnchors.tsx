@@ -11,7 +11,7 @@ const items = [
   },
   {
     icon: "◎",
-    title: "Adaptive quiz. One protocol.",
+    title: "What you flag shapes what you get.",
     body: "We look at energy, focus, stress, sleep, gut, and metabolic patterns, then build around what your answers specifically suggest is under strain.",
   },
 ];
