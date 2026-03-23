@@ -13,7 +13,7 @@ export function ModuleSection({
   return (
     <section>
       <div className="mb-6">
-        <h2 className="font-display text-3xl text-eonic-text">{title}</h2>
+        <h2 className="font-heading text-3xl text-eonic-text">{title}</h2>
         <p className="mt-3 max-w-2xl text-base leading-7 text-eonic-text-2">{subhead}</p>
       </div>
       <div className="grid gap-4 md:grid-cols-2">

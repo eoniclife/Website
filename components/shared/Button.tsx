@@ -32,7 +32,7 @@ function classes(variant: Variant) {
     "inline-flex min-h-[52px] items-center justify-center rounded-button px-6 py-3 text-sm font-medium transition duration-200";
   const variants: Record<Variant, string> = {
     primary: "bg-eonic-teal text-eonic-bg hover:opacity-90 shadow-glow-teal",
-    secondary: "border border-eonic-border-active bg-eonic-teal-dim text-eonic-text hover:bg-eonic-teal/20",
+    secondary: "border border-eonic-border-active bg-eonic-teal-dim text-eonic-text hover:bg-eonic-teal/15",
     ghost: "border border-eonic-border bg-transparent text-eonic-text-2 hover:border-eonic-border-active hover:text-eonic-text",
   };
   return cn(base, variants[variant]);

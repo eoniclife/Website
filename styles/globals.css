@@ -3,20 +3,21 @@
 @tailwind utilities;
 
 :root {
-  --color-bg-primary: #0a0d12;
-  --color-bg-secondary: #111520;
-  --color-bg-surface: #161b27;
-  --color-accent-teal: #00c9a7;
-  --color-accent-teal-dim: rgba(0, 201, 167, 0.12);
-  --color-accent-gold: #c9a84c;
-  --color-text-primary: #f0f2f7;
-  --color-text-secondary: #8a94a8;
-  --color-text-muted: #4a5568;
-  --color-border: #1e2535;
-  --color-border-active: rgba(0, 201, 167, 0.4);
-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
-  --shadow-glow-teal: 0 0 40px rgba(0, 201, 167, 0.15);
-  --shadow-glow-gold: 0 0 40px rgba(201, 168, 76, 0.12);
+  --color-bg-primary: #f6f3ee;
+  --color-bg-secondary: #ffffff;
+  --color-bg-surface: #edeae4;
+  --color-accent-teal: #007a65;
+  --color-accent-teal-dim: rgba(0, 122, 101, 0.08);
+  --color-accent-gold: #9b6700;
+  --color-accent-gold-dim: rgba(155, 103, 0, 0.08);
+  --color-text-primary: #111110;
+  --color-text-secondary: #52504c;
+  --color-text-muted: #9a9793;
+  --color-border: #e2ddd7;
+  --color-border-active: #007a65;
+  --shadow-card: 0 1px 4px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  --shadow-glow-teal: 0 0 0 2px rgba(0, 122, 101, 0.25);
+  --shadow-glow-gold: 0 0 0 2px rgba(155, 103, 0, 0.15);
 }
 
 html {
@@ -27,10 +28,7 @@ html {
 
 body {
   min-height: 100vh;
-  background:
-    radial-gradient(circle at top left, rgba(0, 201, 167, 0.08), transparent 28%),
-    radial-gradient(circle at top right, rgba(201, 168, 76, 0.08), transparent 22%),
-    linear-gradient(180deg, #0a0d12 0%, #0b0f15 100%);
+  background: var(--color-bg-primary);
   color: var(--color-text-primary);
   font-family: var(--font-body), sans-serif;
 }
@@ -44,20 +42,9 @@ a {
   text-decoration: none;
 }
 
-.grain-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.12;
-  background-image:
-    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.08) 0, transparent 16%),
-    radial-gradient(circle at 80% 40%, rgba(255, 255, 255, 0.04) 0, transparent 18%);
-  mix-blend-mode: soft-light;
-}
-
 .surface-panel {
+  background: var(--color-bg-secondary);
   border: 1px solid var(--color-border);
-  background: linear-gradient(180deg, rgba(22, 27, 39, 0.96), rgba(17, 21, 32, 0.98));
   box-shadow: var(--shadow-card);
 }
 

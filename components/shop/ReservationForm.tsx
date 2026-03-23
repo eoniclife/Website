@@ -57,7 +57,7 @@ export function ReservationForm({ orderId, existingWhatsAppNumber }: Reservation
   return (
     <div className="space-y-4 rounded-[24px] border border-eonic-border bg-eonic-bg-2 p-6">
       <div className="space-y-2">
-        <h2 className="font-display text-3xl text-eonic-text">Confirm your reservation</h2>
+        <h2 className="font-heading text-3xl text-eonic-text">Confirm your reservation</h2>
         <p className="text-sm leading-7 text-eonic-text-2">
           {needsPhone
             ? "If you'd like us to reach out on WhatsApp, add the number below. This is optional, but it is the fastest way for us to confirm your order."

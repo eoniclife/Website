@@ -19,7 +19,7 @@ export function FAQ() {
       <div className="mx-auto max-w-4xl">
         <div className="mb-8">
           <p className="font-mono text-sm uppercase tracking-[0.3em] text-eonic-gold">FAQ</p>
-          <h2 className="mt-3 font-display text-4xl text-eonic-text">What people ask before they start.</h2>
+          <h2 className="mt-3 font-heading text-4xl text-eonic-text">What people ask before they start.</h2>
         </div>
         <div className="space-y-4">
           {questions.map(([question, answer], index) => {

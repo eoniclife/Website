@@ -124,7 +124,7 @@ export function EmailCapture({ recommendation }: { recommendation: Recommendatio
 
   return (
     <section className="rounded-[28px] border border-eonic-border bg-eonic-bg-2 p-7">
-      <h2 className="font-display text-3xl text-eonic-text">Get your protocol — and let us make sure it actually works.</h2>
+      <h2 className="font-heading text-3xl text-eonic-text">Get your protocol — and let us make sure it actually works.</h2>
       <div className="mt-6 space-y-4">
         <label className="block">
           <span className="mb-2 block text-sm text-eonic-text-2">Email address</span>

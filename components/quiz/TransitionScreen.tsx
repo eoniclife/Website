@@ -20,7 +20,7 @@ export function TransitionScreen({
         onClick={onContinue}
         className="surface-panel mt-10 w-full rounded-[28px] px-8 py-14 text-center transition hover:border-eonic-border-active"
       >
-        <p className="mx-auto max-w-2xl font-display text-4xl leading-tight text-balance text-eonic-text md:text-5xl">
+        <p className="mx-auto max-w-2xl font-heading text-4xl leading-tight text-balance text-eonic-text md:text-5xl">
           {content.headline}
         </p>
         <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-eonic-text-2">{content.body}</p>

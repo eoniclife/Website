@@ -11,7 +11,7 @@ export function HowItWorks() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-8 max-w-2xl">
           <p className="font-mono text-sm uppercase tracking-[0.3em] text-eonic-gold">How it works</p>
-          <h2 className="mt-3 font-display text-4xl text-eonic-text">A direct path from what you feel to what goes into the protocol.</h2>
+          <h2 className="mt-3 font-heading text-4xl text-eonic-text">A direct path from what you feel to what goes into the protocol.</h2>
         </div>
         <div className="grid gap-5 md:grid-cols-4">
           {steps.map(([number, title, body]) => (

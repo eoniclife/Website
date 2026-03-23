@@ -10,7 +10,7 @@ export function IngredientBreakdown({ recommendation }: { recommendation: Recomm
     <section className="space-y-6">
       <div className="space-y-3">
         <p className="font-mono text-sm uppercase tracking-[0.3em] text-eonic-gold">What is actually in your stack</p>
-        <h2 className="font-display text-4xl text-eonic-text md:text-5xl">Ingredient by ingredient, with the reason it is here.</h2>
+        <h2 className="font-heading text-4xl text-eonic-text md:text-5xl">Ingredient by ingredient, with the reason it is here.</h2>
         <p className="max-w-3xl text-base leading-7 text-eonic-text-2">
           This is your 90-day protocol broken down the useful way: what is foundational, what is here because of your archetype, and what got added because of the modules you flagged.
         </p>

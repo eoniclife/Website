@@ -94,3 +94,18 @@
 - Updated nav and hero science links to point to `/science` instead of the homepage anchor.
 - Small spec note: the brief says not to touch any files except the homepage copy files, but Part 2 also explicitly required `Nav.tsx` and `Hero.tsx` link updates. I implemented those because they were necessary for `/science` to be reachable from the intended entry points.
 - `npm run build` passes after the changes.
+
+## Visual rebrand (CLAUDE_rebrand_v1)
+
+- Implemented the full light-theme rebrand in the canonical repo:
+  - warm off-white global background and white card surfaces
+  - updated `eonic-*` Tailwind tokens and CSS variables
+  - added `font-heading` (DM Sans 700/800) and replaced Playfair page headings site-wide while keeping the Nav/Footer wordmark in Playfair italic
+  - rebuilt the homepage hero right rail into the hardcoded protocol preview card
+  - rebuilt `TriageMultiSelect` into the icon-card grid plus separate optimizer card
+  - updated the secondary button styling to the lighter teal treatment
+  - removed all `grain-overlay` usage and all `animate-drift` usage
+- Added `lucide-react` for the triage icon grid.
+- Verified there are no hardcoded hex color values left in `app/` or `components/`.
+- `npm run build` passes after the full rebrand.
+- I also updated the external brand-constraints reference at `~/Cowork OS/Eonic/build-state.md` to match the new typography/light-palette rules.

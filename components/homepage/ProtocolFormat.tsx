@@ -20,7 +20,7 @@ export function ProtocolFormat() {
         </div>
         <div className="max-w-xl space-y-5">
           <p className="font-mono text-sm uppercase tracking-[0.3em] text-eonic-gold">Protocol format</p>
-          <h2 className="font-display text-4xl text-eonic-text">AM strip. PM sachet. That&apos;s it.</h2>
+          <h2 className="font-heading text-4xl text-eonic-text">AM strip. PM sachet. That&apos;s it.</h2>
           <p className="text-lg leading-8 text-eonic-text-2">
             Your morning strip holds the ingredients that fit best with food. Your evening sachet is a warm-water ritual
             for the compounds that belong later in the day.

@@ -139,11 +139,11 @@ export function InsightLayer({ recommendation }: { recommendation: Recommendatio
     <section className="rounded-[28px] border border-eonic-border bg-eonic-bg-2 px-7 py-8">
       <div className="space-y-6">
         <div>
-          <h2 className="font-display text-3xl text-eonic-text">What we found</h2>
+          <h2 className="font-heading text-3xl text-eonic-text">What we found</h2>
           <p className="mt-3 text-base leading-8 text-eonic-text-2">{content.whatWeFound}</p>
         </div>
         <div>
-          <h2 className="font-display text-3xl text-eonic-text">Why this is happening</h2>
+          <h2 className="font-heading text-3xl text-eonic-text">Why this is happening</h2>
           <p className="mt-3 text-base leading-8 text-eonic-text-2">{content.whyThisHappens}</p>
         </div>
 
@@ -161,7 +161,7 @@ export function InsightLayer({ recommendation }: { recommendation: Recommendatio
         ) : null}
 
         <div>
-          <h2 className="font-display text-3xl text-eonic-text">The good news</h2>
+          <h2 className="font-heading text-3xl text-eonic-text">The good news</h2>
           <p className="mt-3 text-base leading-8 text-eonic-text-2">{content.bridge}</p>
         </div>
       </div>

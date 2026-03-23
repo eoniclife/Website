@@ -15,7 +15,7 @@ export function Interstitial({
       <ProgressBar value={progress} />
       <div className="surface-panel mt-10 rounded-[28px] px-8 py-12 text-center">
         <div className="text-4xl">{content.icon}</div>
-        <h1 className="mt-6 font-display text-4xl text-eonic-text">{content.headline}</h1>
+        <h1 className="mt-6 font-heading text-4xl text-eonic-text">{content.headline}</h1>
         <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-eonic-text-2">{content.body}</p>
         <button
           type="button"

@@ -3,11 +3,10 @@ import { Button } from "@/components/shared/Button";
 export function Hero() {
   return (
     <section className="relative overflow-hidden px-5 py-20 md:px-8 md:py-28">
-      <div className="grain-overlay" />
       <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
         <div className="space-y-8">
           <div className="space-y-5">
-            <h1 className="max-w-3xl font-display text-5xl italic leading-tight text-balance text-eonic-text md:text-7xl">
+            <h1 className="max-w-3xl font-heading text-5xl leading-tight text-balance text-eonic-text md:text-7xl">
               Know what your system
               <br />
               is asking for.
@@ -25,19 +24,40 @@ export function Hero() {
           <p className="text-sm text-eonic-text-muted">Usually takes 2–4 minutes. No account required. No payment upfront.</p>
         </div>
 
-        <div className="relative min-h-[360px] rounded-[28px] border border-eonic-border bg-[radial-gradient(circle_at_25%_25%,rgba(0,201,167,0.16),transparent_24%),radial-gradient(circle_at_75%_35%,rgba(201,168,76,0.16),transparent_18%),linear-gradient(180deg,rgba(17,21,32,0.9),rgba(10,13,18,0.98))] shadow-glow-teal">
-          <div className="absolute inset-8 rounded-full border border-eonic-border/80 animate-drift" />
-          <div className="absolute inset-[18%] rounded-full border border-eonic-teal/20" />
-          <div className="absolute inset-[28%] rounded-full border border-eonic-gold/20" />
-          <div className="absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full bg-eonic-teal/20 blur-2xl" />
-          <div className="absolute bottom-8 left-8 right-8 flex items-center justify-between rounded-card border border-eonic-border bg-eonic-bg/70 px-4 py-3">
+        <div className="surface-panel rounded-[28px] p-8">
+          <p className="font-mono text-xs uppercase tracking-[0.3em] text-eonic-gold">Sample protocol</p>
+          <p className="mt-3 font-heading text-xl text-eonic-text">Restorer + Focus stack</p>
+          <p className="mt-1 text-sm text-eonic-text-muted">9 archetypes · personalised to your answers</p>
+
+          <div className="mt-6 space-y-5">
             <div>
-              <div className="font-mono text-xs uppercase tracking-[0.3em] text-eonic-gold">Research Engine</div>
-              <div className="mt-1 text-sm text-eonic-text-2">Adaptive quiz routing. Ingredient-level protocol logic.</div>
+              <p className="font-mono text-xs uppercase tracking-[0.25em] text-eonic-teal">AM Strip</p>
+              <div className="mt-3 space-y-2">
+                {["Vitamin D3 + K2 (MK-7)", "Methylcobalamin B12", "Omega-3 (TG form)"].map((name) => (
+                  <div key={name} className="flex items-center gap-3">
+                    <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-eonic-teal" />
+                    <span className="font-mono text-sm text-eonic-text-2">{name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="h-2 w-24 overflow-hidden rounded-full bg-eonic-border">
-              <div className="h-full w-2/3 rounded-full bg-eonic-teal" />
+
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.25em] text-eonic-gold">PM Sachet</p>
+              <div className="mt-3 space-y-2">
+                {["Magnesium Glycinate", "Ashwagandha KSM-66"].map((name) => (
+                  <div key={name} className="flex items-center gap-3">
+                    <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-eonic-gold" />
+                    <span className="font-mono text-sm text-eonic-text-2">{name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
+          </div>
+
+          <div className="mt-6 flex items-center justify-between border-t border-eonic-border pt-4">
+            <span className="text-xs text-eonic-text-muted">5 ingredients · 90 days</span>
+            <span className="font-mono text-xs text-eonic-teal">→ yours will differ</span>
           </div>
         </div>
       </div>

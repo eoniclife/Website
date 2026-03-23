@@ -1,10 +1,20 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { Brain, Leaf, Moon, Target, TrendingUp, Wind, Zap } from "lucide-react";
 import { Button } from "@/components/shared/Button";
 import { ProgressBar } from "@/components/quiz/ProgressBar";
 import { cn } from "@/lib/utils";
 import type { QuizQuestion, TriageSelections } from "@/lib/quiz/types";
+
+const CLUSTER_META = {
+  energy: { icon: Zap, label: "Energy & recovery" },
+  focus: { icon: Brain, label: "Cognitive performance" },
+  stress: { icon: Wind, label: "Stress & mood" },
+  sleep: { icon: Moon, label: "Sleep architecture" },
+  gut: { icon: Leaf, label: "Gut & absorption" },
+  metabolic: { icon: TrendingUp, label: "Metabolic function" },
+} as const;
 
 interface TriageMultiSelectProps {
   question: QuizQuestion;
@@ -26,6 +36,8 @@ export function TriageMultiSelect({
   onSubmit,
 }: TriageMultiSelectProps) {
   const [selections, setSelections] = useState<TriageSelections>(initialSelections);
+  const gridOptions = question.options.filter((option) => option.id !== "optimizer");
+  const optimizerOption = question.options.find((option) => option.id === "optimizer");
 
   const hasOptimizer = selections.includes("optimizer");
   const symptomSelections = selections.filter((selection) => selection !== "optimizer");
@@ -83,14 +95,16 @@ export function TriageMultiSelect({
       </div>
 
       <div className="mt-12">
-        <h1 className="text-center font-display text-4xl leading-tight text-balance text-eonic-text md:text-5xl">
+        <h1 className="text-center font-heading text-4xl leading-tight text-balance text-eonic-text md:text-5xl">
           {question.text}
         </h1>
 
-        <div className="mt-10 grid gap-4">
-          {question.options.map((option) => {
+        <div className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-3">
+          {gridOptions.map((option) => {
+            const meta = CLUSTER_META[option.id as keyof typeof CLUSTER_META];
             const selected = selections.includes(option.id);
             const disabled = !selected && disabledOptions.has(option.id);
+            const Icon = meta?.icon ?? Zap;
 
             return (
               <button
@@ -99,21 +113,53 @@ export function TriageMultiSelect({
                 onClick={() => toggleSelection(option.id)}
                 disabled={disabled}
                 className={cn(
-                  "flex min-h-[76px] w-full items-center justify-between gap-4 rounded-card border px-5 py-4 text-left transition",
+                  "flex flex-col items-start gap-3 rounded-card border p-5 text-left transition",
                   selected
-                    ? "border-eonic-border-active bg-eonic-teal/10 text-eonic-text"
-                    : "border-eonic-border bg-eonic-surface text-eonic-text-2 hover:border-eonic-border-active hover:bg-eonic-teal/5 hover:text-eonic-text",
-                  disabled ? "cursor-not-allowed opacity-45 hover:border-eonic-border hover:bg-eonic-surface hover:text-eonic-text-2" : "",
+                    ? "border-eonic-border-active bg-eonic-teal-dim text-eonic-text"
+                    : "border-eonic-border bg-eonic-bg-2 text-eonic-text-2 hover:border-eonic-border-active hover:text-eonic-text",
+                  disabled ? "cursor-not-allowed opacity-40" : "",
                 )}
               >
-                <div className="flex items-start gap-4">
-                  <span className="mt-0.5 text-lg text-eonic-gold">{selected ? "✓" : "○"}</span>
-                  <span className="text-base leading-7">{option.text}</span>
+                <span className={cn("transition", selected ? "text-eonic-teal" : "text-eonic-text-muted")}>
+                  <Icon size={28} />
+                </span>
+                <div>
+                  <p className="text-sm font-medium leading-tight text-eonic-text">{meta?.label ?? option.text}</p>
+                  <p className="mt-1 line-clamp-2 text-xs leading-5 text-eonic-text-muted">{option.text.replace(/^My \w+ — /, "")}</p>
                 </div>
               </button>
             );
           })}
         </div>
+
+        {optimizerOption ? (() => {
+          const selected = selections.includes("optimizer");
+          const disabled = !selected && disabledOptions.has("optimizer");
+
+          return (
+            <button
+              key="optimizer"
+              type="button"
+              onClick={() => toggleSelection("optimizer")}
+              disabled={disabled}
+              className={cn(
+                "mt-3 flex w-full items-center gap-4 rounded-card border px-5 py-4 text-left transition",
+                selected
+                  ? "border-eonic-border-active bg-eonic-teal-dim text-eonic-text"
+                  : "border-eonic-border bg-eonic-bg-2 text-eonic-text-2 hover:border-eonic-border-active hover:text-eonic-text",
+                disabled ? "cursor-not-allowed opacity-40" : "",
+              )}
+            >
+              <span className={cn("flex-shrink-0 transition", selected ? "text-eonic-teal" : "text-eonic-text-muted")}>
+                <Target size={22} />
+              </span>
+              <div>
+                <p className="text-sm font-medium text-eonic-text">Optimizer path</p>
+                <p className="mt-0.5 text-xs text-eonic-text-muted">{optimizerOption.text.replace(/^Everything's mostly fine — /, "")}</p>
+              </div>
+            </button>
+          );
+        })() : null}
 
         <div className="mt-6 flex items-center justify-between text-sm text-eonic-text-muted">
           <span>{hasOptimizer ? "Optimizer path selected" : `Pick up to 3 areas (${symptomSelections.length}/3 selected)`}</span>

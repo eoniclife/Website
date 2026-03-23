@@ -39,7 +39,7 @@ export function QuestionCard({
       </div>
 
       <div className="mt-12">
-        <h1 className="text-center font-display text-4xl leading-tight text-balance text-eonic-text md:text-5xl">
+        <h1 className="text-center font-heading text-4xl leading-tight text-balance text-eonic-text md:text-5xl">
           {question.text}
         </h1>
 

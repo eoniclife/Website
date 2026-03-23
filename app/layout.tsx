@@ -8,8 +8,16 @@ const display = Playfair_Display({
   display: "swap",
 });
 
+const heading = DM_Sans({
+  subsets: ["latin"],
+  weight: ["700", "800"],
+  variable: "--font-heading",
+  display: "swap",
+});
+
 const body = DM_Sans({
   subsets: ["latin"],
+  weight: ["400", "500"],
   variable: "--font-body",
   display: "swap",
 });
@@ -31,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
+    <html lang="en" className={`${display.variable} ${heading.variable} ${body.variable} ${mono.variable}`}>
       <body>{children}</body>
     </html>
   );

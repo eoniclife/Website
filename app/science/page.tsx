@@ -79,7 +79,7 @@ export default function SciencePage() {
       <div className="mx-auto max-w-7xl space-y-20 px-5 py-12 md:px-8 md:py-16">
         <section className="max-w-4xl space-y-5">
           <p className="font-mono text-sm uppercase tracking-[0.3em] text-eonic-gold">THE RESEARCH</p>
-          <h1 className="font-display text-5xl text-eonic-text md:text-7xl">What we looked at before recommending anything.</h1>
+          <h1 className="font-heading text-5xl text-eonic-text md:text-7xl">What we looked at before recommending anything.</h1>
           <p className="max-w-3xl text-lg leading-8 text-eonic-text-2">
             Most supplement advice is calibrated for a global average person. Urban Indian physiology has specific patterns —
             different deficiency rates, different dietary baselines, different stressors. We started there rather than
@@ -89,7 +89,7 @@ export default function SciencePage() {
 
         <section className="max-w-5xl space-y-6">
           <p className="font-mono text-sm uppercase tracking-[0.3em] text-eonic-gold">THE BASELINE PROBLEM</p>
-          <h2 className="font-display text-4xl text-eonic-text md:text-5xl">The person most supplements were designed for is not you.</h2>
+          <h2 className="font-heading text-4xl text-eonic-text md:text-5xl">The person most supplements were designed for is not you.</h2>
           <div className="space-y-5 text-base leading-8 text-eonic-text-2">
             <p>
               Standard supplement recommendations are derived largely from research on Western populations with different
@@ -115,7 +115,7 @@ export default function SciencePage() {
         <section className="space-y-6">
           <div className="max-w-5xl space-y-5">
             <p className="font-mono text-sm uppercase tracking-[0.3em] text-eonic-gold">THE FORM PROBLEM</p>
-            <h2 className="font-display text-4xl text-eonic-text md:text-5xl">The ingredient matters. The form of it matters more.</h2>
+            <h2 className="font-heading text-4xl text-eonic-text md:text-5xl">The ingredient matters. The form of it matters more.</h2>
             <p className="text-base leading-8 text-eonic-text-2">
               Two products can both list &quot;Magnesium 300mg&quot; on the label and deliver completely different outcomes based on
               which magnesium compound is in the capsule. Absorption rates, tolerability, and target tissue differ
@@ -153,7 +153,7 @@ export default function SciencePage() {
         <section className="space-y-6">
           <div className="max-w-5xl space-y-5">
             <p className="font-mono text-sm uppercase tracking-[0.3em] text-eonic-gold">THE NUMBERS PROBLEM</p>
-            <h2 className="font-display text-4xl text-eonic-text md:text-5xl">
+            <h2 className="font-heading text-4xl text-eonic-text md:text-5xl">
               Lab &quot;normal&quot; and physiologically optimal are not the same number.
             </h2>
             <p className="text-base leading-8 text-eonic-text-2">
@@ -180,7 +180,7 @@ export default function SciencePage() {
         <section className="space-y-6">
           <div className="max-w-5xl space-y-5">
             <p className="font-mono text-sm uppercase tracking-[0.3em] text-eonic-gold">THE ADAPTIVE QUIZ</p>
-            <h2 className="font-display text-4xl text-eonic-text md:text-5xl">Symptoms point to patterns. The quiz maps the pattern.</h2>
+            <h2 className="font-heading text-4xl text-eonic-text md:text-5xl">Symptoms point to patterns. The quiz maps the pattern.</h2>
             <div className="space-y-5 text-base leading-8 text-eonic-text-2">
               <p>
                 Low energy can originate from iron deficiency, thyroid dysregulation, chronic stress, poor sleep
@@ -210,7 +210,7 @@ export default function SciencePage() {
         <section className="space-y-6">
           <div className="max-w-5xl space-y-5">
             <p className="font-mono text-sm uppercase tracking-[0.3em] text-eonic-gold">THE MODEL</p>
-            <h2 className="font-display text-4xl text-eonic-text md:text-5xl">What we don&apos;t do.</h2>
+            <h2 className="font-heading text-4xl text-eonic-text md:text-5xl">What we don&apos;t do.</h2>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
@@ -223,7 +223,7 @@ export default function SciencePage() {
         </section>
 
         <section className="rounded-[28px] border border-eonic-border bg-eonic-bg-2 px-8 py-12 text-center">
-          <h2 className="font-display text-4xl text-eonic-text md:text-5xl">See what the quiz recommends for you.</h2>
+          <h2 className="font-heading text-4xl text-eonic-text md:text-5xl">See what the quiz recommends for you.</h2>
           <Button href="/quiz" className="mt-8">
             Find your protocol →
           </Button>

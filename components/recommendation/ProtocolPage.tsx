@@ -36,7 +36,7 @@ export function ProtocolPage() {
       <div className="mx-auto max-w-5xl space-y-10 pt-6">
         <header className="space-y-5">
           <p className="font-mono text-sm uppercase tracking-[0.3em] text-eonic-gold">Your Eonic protocol</p>
-          <h1 className="font-display text-5xl text-eonic-text">{archetype.name}</h1>
+          <h1 className="font-heading text-5xl text-eonic-text">{archetype.name}</h1>
           <p className="max-w-3xl text-lg leading-8 text-eonic-text-2">{archetype.description}</p>
         </header>
 

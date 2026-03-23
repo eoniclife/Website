@@ -20,7 +20,7 @@ export default function HomePage() {
       <Pricing />
       <section className="px-5 py-16 text-center md:px-8">
         <div className="mx-auto max-w-3xl rounded-card border border-dashed border-eonic-border-active bg-eonic-teal/5 px-8 py-12">
-          <p className="font-display text-3xl italic text-eonic-text">Eonic is in its founding protocol phase.</p>
+          <p className="font-heading text-3xl text-eonic-text">Eonic is in its founding protocol phase.</p>
           <p className="mt-4 text-lg leading-8 text-eonic-text-2">
             We&apos;re building with our first 500 users. People who want something better than what&apos;s out there and are
             willing to tell us if it&apos;s not working.

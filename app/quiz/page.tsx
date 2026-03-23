@@ -52,7 +52,7 @@ export default function QuizEntryPage() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-eonic-bg px-5 py-12">
       <section className="surface-panel w-full max-w-3xl rounded-[32px] px-8 py-14 text-center">
-        <p className="font-display text-5xl italic text-eonic-text md:text-6xl">
+        <p className="font-heading text-5xl text-eonic-text md:text-6xl">
           Let&apos;s understand how your body actually functions.
         </p>
         <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-eonic-text-2">
