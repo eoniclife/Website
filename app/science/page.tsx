@@ -1,4 +1,5 @@
 import { Button } from "@/components/shared/Button";
+import { Footer } from "@/components/shared/Footer";
 import { Nav } from "@/components/shared/Nav";
 
 const formRows = [
@@ -229,6 +230,7 @@ export default function SciencePage() {
           <p className="mt-4 text-sm text-eonic-text-muted">Usually 2–4 minutes. No account required. No payment upfront.</p>
         </section>
       </div>
+      <Footer />
     </main>
   );
 }
