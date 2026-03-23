@@ -109,3 +109,35 @@
 - Verified there are no hardcoded hex color values left in `app/` or `components/`.
 - `npm run build` passes after the full rebrand.
 - I also updated the external brand-constraints reference at `~/Cowork OS/Eonic/build-state.md` to match the new typography/light-palette rules.
+
+## Funnel analytics + observability pass
+
+- Implemented a minimal first-party analytics path without adding an external vendor:
+  - new client helper at `lib/analytics.ts`
+  - new ingestion route at `app/api/analytics/event/route.ts`
+  - client analytics events are persisted through the existing `state_events` table with `source: "client_analytics"` in `event_data`
+- Added funnel instrumentation for:
+  - homepage CTA clicks from the hero and pricing sections
+  - per-question step views (`quiz_step_viewed`) with question index/total
+  - successful email capture (`email_saved`)
+  - WhatsApp opt-in selection (`whatsapp_opt_in_selected`)
+  - order CTA clicks (`order_intent_clicked`)
+  - background answer-save failures on the client (`quiz_answer_save_failed_client`)
+- Left existing server-side milestone events in place:
+  - `quiz_started`
+  - `quiz_completed`
+  - `email_captured`
+  - `order_intent`
+- Added structured JSON logging helpers in `lib/observability.ts` and applied them to:
+  - `POST /api/quiz/session`
+  - `POST /api/quiz/answer`
+  - `POST /api/user/capture`
+  - `POST /api/order/intent`
+- Important implementation note:
+  - I did **not** include `/api/quiz/complete` logging in this commit even though it was part of the original goal.
+  - Reason: that file already had unrelated in-progress “intelligence” changes in the working tree. To avoid accidentally bundling someone else’s feature work into this analytics commit, I left that route untouched for now and landed the rest cleanly.
+- I widened `recordStateEvent`’s `eventType` typing from a fixed union to `string` so the same Supabase-backed event table can store both product milestone events and the new lightweight analytics events.
+- This approach was chosen because it gives immediate funnel visibility and backend diagnostics using infrastructure the app already has:
+  - Supabase `state_events` for event capture
+  - Cloudflare/Worker logs for structured server errors
+  - no third-party analytics SDK or dashboard dependency yet

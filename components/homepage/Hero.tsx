@@ -1,4 +1,7 @@
+"use client";
+
 import { Button } from "@/components/shared/Button";
+import { trackEvent } from "@/lib/analytics";
 
 export function Hero() {
   return (
@@ -16,7 +19,17 @@ export function Hero() {
             </p>
           </div>
           <div className="flex flex-col gap-4 sm:flex-row">
-            <Button href="/quiz">Find your protocol →</Button>
+            <Button
+              href="/quiz"
+              onClick={() =>
+                trackEvent({
+                  event: "homepage_cta_clicked",
+                  data: { source: "hero_primary" },
+                })
+              }
+            >
+              Find your protocol →
+            </Button>
             <Button href="/science" variant="secondary">
               See what&apos;s in it
             </Button>

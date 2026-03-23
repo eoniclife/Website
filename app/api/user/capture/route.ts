@@ -2,6 +2,7 @@ import { createServerClient } from "@/lib/supabase/server";
 import { failure, parseJson, success } from "@/lib/api";
 import { isValidEmail, isValidIndianWhatsApp, isValidTime, isValidUUID } from "@/lib/validation";
 import { recordStateEvent } from "@/lib/state-events";
+import { logApiError, logServerEvent } from "@/lib/observability";
 
 interface RequestBody {
   sessionUuid: string;
@@ -23,6 +24,16 @@ export async function POST(request: Request) {
     if (body.amReminderTime && !isValidTime(body.amReminderTime)) invalidFields.push("amReminderTime");
     if (body.pmReminderTime && !isValidTime(body.pmReminderTime)) invalidFields.push("pmReminderTime");
     if (invalidFields.length > 0) {
+      logServerEvent("warn", {
+        event: "user_capture_validation_failed",
+        route: "/api/user/capture",
+        details: {
+          sessionUuid: body.sessionUuid ?? null,
+          email: body.email ?? null,
+          invalidFields,
+          whatsappOptedIn: body.whatsappOptedIn ?? false,
+        },
+      });
       return failure("VALIDATION_ERROR", 400, { fields: invalidFields });
     }
 
@@ -43,6 +54,11 @@ export async function POST(request: Request) {
       .single();
 
     if (upsertError || !user) {
+      logServerEvent("error", {
+        event: "user_capture_upsert_failed",
+        route: "/api/user/capture",
+        details: { sessionUuid: body.sessionUuid, email: body.email, message: upsertError?.message ?? "User upsert failed" },
+      });
       return failure("DB_ERROR", 500, { message: upsertError?.message ?? "User upsert failed" });
     }
 
@@ -54,8 +70,20 @@ export async function POST(request: Request) {
       eventData: { whatsapp_opted_in: body.whatsappOptedIn },
     });
 
+    logServerEvent("info", {
+      event: "user_capture_succeeded",
+      route: "/api/user/capture",
+      details: {
+        sessionUuid: body.sessionUuid,
+        userId: user.id,
+        email: body.email,
+        whatsappOptedIn: body.whatsappOptedIn,
+      },
+    });
+
     return success({ success: true, userId: user.id });
   } catch (error) {
+    logApiError("/api/user/capture", error);
     return failure("DB_ERROR", 500, { message: error instanceof Error ? error.message : "Unknown error" });
   }
 }

@@ -1,4 +1,7 @@
+"use client";
+
 import { Button } from "@/components/shared/Button";
+import { trackEvent } from "@/lib/analytics";
 
 const features = [
   "AM capsule strip + PM powder sachet",
@@ -19,7 +22,16 @@ export function Pricing() {
             <p key={feature}>{feature}</p>
           ))}
         </div>
-        <Button href="/quiz" className="mt-8">
+        <Button
+          href="/quiz"
+          className="mt-8"
+          onClick={() =>
+            trackEvent({
+              event: "homepage_cta_clicked",
+              data: { source: "pricing_primary" },
+            })
+          }
+        >
           Find your protocol →
         </Button>
         <p className="mt-4 text-sm text-eonic-text-muted">

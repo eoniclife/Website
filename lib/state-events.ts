@@ -3,7 +3,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 interface StateEventInput {
   userId?: string | null;
   orderId?: string | null;
-  eventType: "quiz_started" | "quiz_completed" | "email_captured" | "order_intent";
+  eventType: string;
   eventData: Record<string, unknown>;
 }
 

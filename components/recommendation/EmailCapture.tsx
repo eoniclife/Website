@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/shared/Button";
+import { trackEvent } from "@/lib/analytics";
 import { useQuizStore } from "@/lib/quiz/store";
 import type { RecommendationResult } from "@/lib/quiz/types";
 
@@ -62,6 +63,14 @@ export function EmailCapture({ recommendation }: { recommendation: Recommendatio
       }
 
       setUserId(payload.userId);
+      trackEvent({
+        event: "email_saved",
+        sessionUuid,
+        userId: payload.userId,
+        data: {
+          whatsapp_opted_in: whatsAppOptIn,
+        },
+      });
       setMessage("Details saved. You can start your protocol whenever you're ready.");
     } catch (error) {
       console.error(error);
@@ -81,6 +90,17 @@ export function EmailCapture({ recommendation }: { recommendation: Recommendatio
     setMessage(null);
 
     try {
+      trackEvent({
+        event: "order_intent_clicked",
+        sessionUuid,
+        userId,
+        data: {
+          archetype: recommendation.archetype,
+          primary_module: recommendation.primaryModule,
+          secondary_module: recommendation.secondaryModule,
+        },
+      });
+
       const response = await fetch("/api/order/intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -141,10 +161,38 @@ export function EmailCapture({ recommendation }: { recommendation: Recommendatio
           <p className="text-lg text-eonic-text">Would you like us to remind you to take your supplements?</p>
           <p className="mt-2 text-sm leading-6 text-eonic-text-2">We&apos;ll message you at your preferred times. Nothing else. No marketing.</p>
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-            <Button variant={whatsAppOptIn ? "primary" : "secondary"} className="sm:flex-1" onClick={() => setWhatsAppOptIn(true)}>
+            <Button
+              variant={whatsAppOptIn ? "primary" : "secondary"}
+              className="sm:flex-1"
+              onClick={() => {
+                setWhatsAppOptIn(true);
+                if (!whatsAppOptIn) {
+                  trackEvent({
+                    event: "whatsapp_opt_in_selected",
+                    sessionUuid,
+                    userId,
+                    data: { selected: true },
+                  });
+                }
+              }}
+            >
               Yes, remind me
             </Button>
-            <Button variant={!whatsAppOptIn ? "primary" : "ghost"} className="sm:flex-1" onClick={() => setWhatsAppOptIn(false)}>
+            <Button
+              variant={!whatsAppOptIn ? "primary" : "ghost"}
+              className="sm:flex-1"
+              onClick={() => {
+                setWhatsAppOptIn(false);
+                if (whatsAppOptIn) {
+                  trackEvent({
+                    event: "whatsapp_opt_in_selected",
+                    sessionUuid,
+                    userId,
+                    data: { selected: false },
+                  });
+                }
+              }}
+            >
               Not right now
             </Button>
           </div>

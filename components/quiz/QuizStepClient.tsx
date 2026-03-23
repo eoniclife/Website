@@ -8,6 +8,7 @@ import { LoadingScreen } from "@/components/quiz/LoadingScreen";
 import { QuestionCard } from "@/components/quiz/QuestionCard";
 import { TriageMultiSelect } from "@/components/quiz/TriageMultiSelect";
 import { TransitionScreen } from "@/components/quiz/TransitionScreen";
+import { trackEvent } from "@/lib/analytics";
 import { getRecommendation, saveAnswerToDb } from "@/lib/quiz/api";
 import { getInterstitialContent, getTransitionContent } from "@/lib/quiz/interstitials";
 import { questionsById, triageQuestions } from "@/lib/quiz/questions";
@@ -26,6 +27,7 @@ const RESET_CONFIRMATION = "This will clear your answers and restart the quiz.";
 export function QuizStepClient({ step }: { step: string }) {
   const router = useRouter();
   const hasCompletedLoading = useRef(false);
+  const trackedStepViews = useRef<Set<string>>(new Set());
   const [direction, setDirection] = useState(1);
   const {
     hasHydrated,
@@ -65,6 +67,28 @@ export function QuizStepClient({ step }: { step: string }) {
   const { index: questionIndex, total: questionTotal } = getQuestionPosition(step, adaptiveSequence);
   const progress = getProgressPercent(step, adaptiveSequence);
 
+  useEffect(() => {
+    if (!hasHydrated || !sessionUuid || !step || !question) {
+      return;
+    }
+
+    const key = `${sessionUuid}:${step}`;
+    if (trackedStepViews.current.has(key)) {
+      return;
+    }
+
+    trackedStepViews.current.add(key);
+    trackEvent({
+      event: "quiz_step_viewed",
+      sessionUuid,
+      data: {
+        step,
+        question_index: questionIndex,
+        question_total: questionTotal,
+      },
+    });
+  }, [hasHydrated, question, questionIndex, questionTotal, sessionUuid, step]);
+
   const advance = useCallback(
     (fromStep: string, sequence = adaptiveSequence) => {
       const next = getNextStep(fromStep, sequence);
@@ -90,6 +114,15 @@ export function QuizStepClient({ step }: { step: string }) {
 
     saveAnswerToDb(sessionUuid, question.id, answer).catch((error) => {
       console.error("Background save failed:", error);
+      trackEvent({
+        event: "quiz_answer_save_failed_client",
+        sessionUuid,
+        data: {
+          question_id: question.id,
+          answer_id: answer.id,
+          message: error instanceof Error ? error.message : String(error),
+        },
+      });
     });
   }
 
