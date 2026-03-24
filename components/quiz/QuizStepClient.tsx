@@ -3,11 +3,13 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Interstitial } from "@/components/quiz/Interstitial";
 import { LoadingScreen } from "@/components/quiz/LoadingScreen";
 import { QuestionCard } from "@/components/quiz/QuestionCard";
 import { TriageMultiSelect } from "@/components/quiz/TriageMultiSelect";
 import { TransitionScreen } from "@/components/quiz/TransitionScreen";
+import { Button } from "@/components/shared/Button";
 import { trackEvent } from "@/lib/analytics";
 import { getRecommendation, saveAnswerToDb } from "@/lib/quiz/api";
 import { getInterstitialContent, getTransitionContent } from "@/lib/quiz/interstitials";
@@ -192,6 +194,14 @@ export function QuizStepClient({ step }: { step: string }) {
 
   return (
     <section className="min-h-screen bg-eonic-bg px-5 py-8 md:px-8 md:py-10">
+      <div className="mx-auto mb-6 flex w-full max-w-5xl items-center justify-between">
+        <Link href="/" className="font-display text-3xl italic text-eonic-teal">
+          eonic
+        </Link>
+        <Button href="/" variant="secondary">
+          Home
+        </Button>
+      </div>
       {!hasHydrated ? null : (
         <AnimatePresence mode="wait" initial={false}>
           <motion.div

@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Button } from "@/components/shared/Button";
 import { createSession } from "@/lib/quiz/api";
 import { useQuizStore } from "@/lib/quiz/store";
@@ -51,7 +52,16 @@ export default function QuizEntryPage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-eonic-bg px-5 py-12">
-      <section className="surface-panel w-full max-w-3xl rounded-[32px] px-8 py-14 text-center">
+      <section className="w-full max-w-3xl">
+        <div className="mb-6 flex items-center justify-between">
+          <Link href="/" className="font-display text-3xl italic text-eonic-teal">
+            eonic
+          </Link>
+          <Button href="/" variant="secondary">
+            Home
+          </Button>
+        </div>
+        <div className="surface-panel rounded-[32px] px-8 py-14 text-center">
         <p className="font-heading text-5xl text-eonic-text md:text-6xl">
           Let&apos;s understand how your body actually functions.
         </p>
@@ -61,6 +71,7 @@ export default function QuizEntryPage() {
         <Button className="mt-10" onClick={handleBegin}>
           Begin →
         </Button>
+        </div>
       </section>
     </main>
   );
