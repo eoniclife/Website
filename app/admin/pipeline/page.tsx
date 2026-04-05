@@ -21,7 +21,7 @@ export default async function AdminPipelinePage() {
         <header className="space-y-2">
           <h1 className="text-3xl font-semibold">Pilot order pipeline</h1>
           <p className="max-w-3xl text-sm leading-6 text-slate-600">
-            Internal only. This page has no authentication yet and should not stay exposed once real traffic starts.
+            Internal only. Access is protected by the shared admin token.
           </p>
         </header>
 

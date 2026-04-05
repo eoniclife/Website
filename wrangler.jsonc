@@ -20,6 +20,9 @@
   "observability": {
     "enabled": true
   },
+  "vars": {
+    "ADMIN_TOKEN": "change-me"
+  },
   "routes": [
     {
       "pattern": "eonic.life",

@@ -141,3 +141,26 @@
   - Supabase `state_events` for event capture
   - Cloudflare/Worker logs for structured server errors
   - no third-party analytics SDK or dashboard dependency yet
+
+## 2026-04-05
+
+- Implemented the two active brief items from `CLAUDE.md`:
+  - added admin token auth for `/admin/*` with a root `middleware.ts`
+  - added a minimal `/admin/login` page and `POST /api/admin/login` handler that sets an `admin_token` cookie for 7 days
+  - added `ADMIN_TOKEN` to `wrangler.jsonc` with the required placeholder value
+  - added the requested structured observability events in `app/api/quiz/complete/route.ts`
+- Small brief ambiguity resolved:
+  - the middleware spec said unauthenticated admin requests should return plain-text `401 Unauthorized`
+  - the acceptance criteria said visiting `/admin/pipeline` should redirect to `/admin/login`
+  - implementation uses both: browser HTML navigations redirect to `/admin/login`, while non-HTML requests still receive plain-text `401 Unauthorized`
+- Why:
+  - protect the pilot admin pipeline before wider internal sharing
+  - complete the previously deferred `/api/quiz/complete` logging without altering route behavior
+- Verification:
+  - ran `npm ci` because the workspace did not include `node_modules`
+  - `npm run build` passes
+- Operational follow-up:
+  - AVS needs to set a real `ADMIN_TOKEN` value in the Cloudflare dashboard before using the admin pipeline in any shared context
+- Git:
+  - recovered the change into a fresh git clone because the copied working folder had no `.git` metadata
+  - commit hash pending until commit/push completes
