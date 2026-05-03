@@ -1,166 +1,30 @@
-## 2026-03-22
+# CODEX Notes — shareable protocol and admin link pass
 
-- Implemented the active brief from `CLAUDE.md`:
-  - fixed the `/api/quiz/complete` race by sending `clientAnswers` from the client
-  - added a protocol-page retake path
-  - fixed the homepage `#science` anchor
-  - added shared nav to `/protocol`
-- Slightly improved the scoring fallback beyond the brief: when DB answers are incomplete, the server now scores from a merged answer set instead of discarding whatever did successfully persist.
-- Added `tsconfig.tsbuildinfo` to `.gitignore` so local typecheck/build artifacts stop polluting git status.
+Date: 2026-05-03
 
-## Feedback for Claude on the new adaptive-quiz brief
+Context from the requested implementation:
+- Added server-rendered protocol route at `app/protocol/[orderId]/page.tsx`
+- Added shop confirmation share link block at `app/shop/page.tsx`
+- Added admin order detail protocol link at `app/admin/pipeline/[orderId]/page.tsx`
+- Added client copy utility `components/shop/ProtocolShareLink.tsx`
 
-- Directionally, the adaptive triage-first quiz is the right next move. The design goals make sense:
-  - shorter paths for symptomatic users
-  - a distinct optimizer branch
-  - ratio-based scoring once question counts vary
-  - an authored insight layer on the protocol page
-- I agree with preserving the current Supabase schema and keeping the `clientAnswers` race-condition fix in `/api/quiz/complete`.
-- I would change the implementation rhythm. Building after every single file is not the cleanest way to land a cross-cutting refactor like this. Safer sequence:
-  - types + scoring + adaptive sequence core
-  - Zustand state + interstitial model
-  - quiz router/UI
-  - protocol insight layer
-  - final build + manual flow checks
-- The brief is missing one important migration detail: persisted Zustand state. Since the quiz state is stored in `localStorage`, changing question IDs and sequence shape should include a `persist` version bump and either a migration or a reset of incompatible saved state. Without that, returning users can land in broken sessions.
-- The QT3 back-navigation reset rule should live at the router/store boundary, not buried inside a leaf UI component.
-- I would avoid mixing unrelated polish into this pass. This is already a substantial quiz-system rewrite and should stay focused.
+Schema checks against `supabase/schema.sql`:
+- `orders` does **not** have direct `primary_module` or `secondary_module` columns; modules are stored in `orders.protocol_config`.
+- `quiz_sessions` does **not** include `dimension_scores`; only `scores` (dimension totals), `raw_answers`, and module columns are stored.
+- `orders.quiz_session_id` exists and can be used for a direct join to `quiz_sessions`.
+- For user-based session fallback, `quiz_sessions` has `user_id` and `completed_at`, so we can query latest completed session by `user_id`.
 
-## Adaptive quiz implementation notes
+Current checkout gaps relative to the brief:
+- No `/app/admin/*` routes existed before this update, so admin detail behavior is now newly introduced here.
+- `/app/api/order/reserve` and a full reservation-form flow are not present in this checkout, so `/shop` can only show the share link when `orders.status` is already `reserved` or `paid`.
+- `CODEX_NOTES.md` did not exist in this workspace before this work; this file was created.
 
-- Implemented the adaptive triage-first quiz across the existing quiz architecture:
-  - new triage question bank and adaptive cluster banks
-  - ratio-based scoring with `maxScores`
-  - probe-driven `dimensionOverrides`
-  - persisted Zustand migration/reset for incompatible old `Q1–Q36` state
-  - adaptive sequence routing, triage transition screen, cluster intro screens
-  - QT3 multi-select UI with max-3 symptom lock and optimizer exclusivity
-  - protocol `InsightLayer` with authored archetype copy and hidden-dimension copy
-- The `clientAnswers` fallback from the previous brief was preserved.
-- `npm run build` passes.
-- `npm run typecheck` passes after build generates Next's `.next/types`.
-
-### Spec ambiguity resolved in code
-
-- The spec says each cluster has 5 anchor questions + 1 probe, but the gut section also moves the diet question into shared `QDIET`.
-- To avoid duplicating diet capture, the implementation treats `QDIET` as shared and keeps the gut cluster at 4 anchors + 1 probe. The adaptive sequence and scoring are built around that interpretation.
-
-## Protocol ingredient transparency layer
-
-- Implemented a new authored ingredient resolver in `lib/protocol/ingredients.ts` and rendered it through `components/recommendation/IngredientBreakdown.tsx`.
-- The protocol page now shows:
-  - Foundation ingredients that apply to every stack
-  - Archetype-specific ingredients
-  - Module-specific add-ons for the primary and secondary modules
-- I removed the older generic baseline/module ingredient blocks from `ProtocolPage.tsx` so the page does not show two competing ingredient systems.
-- Ingredients are deduped across groups. If an ingredient exists at both a general and more specific layer, the more specific layer wins.
-- `npm run build` passes after the change.
-
-## Minor polish follow-up
-
-- Stabilized the quiz transition timer path by passing a memoized `onContinue` callback into `TransitionScreen`.
-- Removed the duplicate mono `What we found` kicker from `InsightLayer` so the section does not repeat its own heading.
-- `npm run build` still passes after these edits.
-
-## Pre-order confirmation + internal pipeline
-
-- Implemented `/shop?order=<id>` as a real reservation page backed by Supabase orders instead of the previous placeholder.
-- Added `POST /api/order/reserve` to move orders from `intent` to `reserved` and update the user's WhatsApp number when provided.
-- Implemented `/admin/pipeline` and `/admin/pipeline/[orderId]` as temporary internal ops pages.
-- Confirmed the live schema already includes `users.whatsapp_number`, so no schema change was needed.
-- Important: the admin pipeline pages are intentionally unauthenticated for this first pilot only and need auth before any real scale or broader internal sharing.
-
-## Homepage tone pass
-
-- Refreshed the homepage again after the factual update pass, this time for tone rather than product truth.
-- Main goal was to make the copy feel more premium and less like internal product documentation.
-- Updated:
-  - hero headline/subhead
-  - trust-anchor body copy
-  - how-it-works headline and step wording
-  - pricing reassurance copy
-  - FAQ phrasing
-  - research-preview headline
-- Claude should check whether the homepage now feels closer to the intended brand voice, especially the hero and trust sections.
-
-## Homepage copy corrections + science page
-
-- Applied the latest surgical homepage copy corrections exactly where requested:
-  - `TrustAnchors.tsx`
-  - `HowItWorks.tsx`
-  - `Pricing.tsx`
-  - `FAQ.tsx`
-- Added a new standalone `/science` page at `app/science/page.tsx` with the full inline section structure from the brief.
-- Updated nav and hero science links to point to `/science` instead of the homepage anchor.
-- Small spec note: the brief says not to touch any files except the homepage copy files, but Part 2 also explicitly required `Nav.tsx` and `Hero.tsx` link updates. I implemented those because they were necessary for `/science` to be reachable from the intended entry points.
-- `npm run build` passes after the changes.
-
-## Visual rebrand (CLAUDE_rebrand_v1)
-
-- Implemented the full light-theme rebrand in the canonical repo:
-  - warm off-white global background and white card surfaces
-  - updated `eonic-*` Tailwind tokens and CSS variables
-  - added `font-heading` (DM Sans 700/800) and replaced Playfair page headings site-wide while keeping the Nav/Footer wordmark in Playfair italic
-  - rebuilt the homepage hero right rail into the hardcoded protocol preview card
-  - rebuilt `TriageMultiSelect` into the icon-card grid plus separate optimizer card
-  - updated the secondary button styling to the lighter teal treatment
-  - removed all `grain-overlay` usage and all `animate-drift` usage
-- Added `lucide-react` for the triage icon grid.
-- Verified there are no hardcoded hex color values left in `app/` or `components/`.
-- `npm run build` passes after the full rebrand.
-- I also updated the external brand-constraints reference at `~/Cowork OS/Eonic/build-state.md` to match the new typography/light-palette rules.
-
-## Funnel analytics + observability pass
-
-- Implemented a minimal first-party analytics path without adding an external vendor:
-  - new client helper at `lib/analytics.ts`
-  - new ingestion route at `app/api/analytics/event/route.ts`
-  - client analytics events are persisted through the existing `state_events` table with `source: "client_analytics"` in `event_data`
-- Added funnel instrumentation for:
-  - homepage CTA clicks from the hero and pricing sections
-  - per-question step views (`quiz_step_viewed`) with question index/total
-  - successful email capture (`email_saved`)
-  - WhatsApp opt-in selection (`whatsapp_opt_in_selected`)
-  - order CTA clicks (`order_intent_clicked`)
-  - background answer-save failures on the client (`quiz_answer_save_failed_client`)
-- Left existing server-side milestone events in place:
-  - `quiz_started`
-  - `quiz_completed`
-  - `email_captured`
-  - `order_intent`
-- Added structured JSON logging helpers in `lib/observability.ts` and applied them to:
-  - `POST /api/quiz/session`
-  - `POST /api/quiz/answer`
-  - `POST /api/user/capture`
-  - `POST /api/order/intent`
-- Important implementation note:
-  - I did **not** include `/api/quiz/complete` logging in this commit even though it was part of the original goal.
-  - Reason: that file already had unrelated in-progress “intelligence” changes in the working tree. To avoid accidentally bundling someone else’s feature work into this analytics commit, I left that route untouched for now and landed the rest cleanly.
-- I widened `recordStateEvent`’s `eventType` typing from a fixed union to `string` so the same Supabase-backed event table can store both product milestone events and the new lightweight analytics events.
-- This approach was chosen because it gives immediate funnel visibility and backend diagnostics using infrastructure the app already has:
-  - Supabase `state_events` for event capture
-  - Cloudflare/Worker logs for structured server errors
-  - no third-party analytics SDK or dashboard dependency yet
-
-## 2026-04-05
-
-- Implemented the two active brief items from `CLAUDE.md`:
-  - added admin token auth for `/admin/*` with a root `middleware.ts`
-  - added a minimal `/admin/login` page and `POST /api/admin/login` handler that sets an `admin_token` cookie for 7 days
-  - added `ADMIN_TOKEN` to `wrangler.jsonc` with the required placeholder value
-  - added the requested structured observability events in `app/api/quiz/complete/route.ts`
-- Small brief ambiguity resolved:
-  - the middleware spec said unauthenticated admin requests should return plain-text `401 Unauthorized`
-  - the acceptance criteria said visiting `/admin/pipeline` should redirect to `/admin/login`
-  - implementation uses both: browser HTML navigations redirect to `/admin/login`, while non-HTML requests still receive plain-text `401 Unauthorized`
-- Why:
-  - protect the pilot admin pipeline before wider internal sharing
-  - complete the previously deferred `/api/quiz/complete` logging without altering route behavior
-- Verification:
-  - ran `npm ci` because the workspace did not include `node_modules`
-  - `npm run build` passes
-- Operational follow-up:
-  - AVS needs to set a real `ADMIN_TOKEN` value in the Cloudflare dashboard before using the admin pipeline in any shared context
-- Git:
-  - recovered the change into a fresh git clone because the copied working folder had no `.git` metadata
-  - commit hash pending until commit/push completes
+Update on this run (shareable protocol hardening):
+- Confirmed actual schema in this workspace (`supabase/schema.sql`) still uses `orders.scores`/`protocol_config` pattern and does not expose:
+  - `orders.primary_module` or `orders.secondary_module`
+  - `quiz_sessions.dimension_scores`
+- `orders.quiz_session_id` is present and is the preferred path for pulling quiz context.
+- A fallback path by `quiz_sessions.user_id + completed_at DESC` remains valid.
+- `app/protocol/[orderId]/page.tsx` now renders a server-side share view with `Nav`, `Footer`, module sections from resolved modules, and a guarded "Hidden dimensions" block from quiz `scores` when available; it intentionally avoids `EmailCapture` and preserves the existing quiz-offer CTA.
+- `components/shop/ProtocolShareLink.tsx` now explicitly labels the shared URL as "Your protocol link" and exposes a copy action using plain `navigator.clipboard.writeText`.
+- `app/admin/pipeline/[orderId]/page.tsx` already had the "View protocol page →" link and continues to open `/protocol/<orderId>` in a new tab; location remains near the order detail section.

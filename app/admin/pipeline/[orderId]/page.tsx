@@ -1,181 +1,71 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { getOrderById } from "@/lib/orders";
-import { archetypes } from "@/lib/recommendation/archetypes";
-import { modules } from "@/lib/recommendation/modules";
-import { getIngredientBreakdown } from "@/lib/protocol/ingredients";
-import type { RecommendationResult } from "@/lib/quiz/types";
+import { createServerClient } from "@/lib/supabase/server";
+import { isValidUUID } from "@/lib/validation";
 
-export const dynamic = "force-dynamic";
-
-interface AdminOrderDetailPageProps {
-  params: Promise<{
-    orderId: string;
-  }>;
+interface AdminOrderPageProps {
+  params: Promise<{ orderId: string }>;
 }
 
-function buildRecommendation(archetype: string, protocolConfig: Record<string, unknown>): RecommendationResult {
-  return {
-    scores: {
-      energy: 0,
-      focus: 0,
-      stress: 0,
-      sleep: 0,
-      metabolic: 0,
-      gut: 0,
-      recovery: 0,
-    },
-    hiddenDimensions: [],
-    triageSelections: [],
-    archetype,
-    primaryModule: typeof protocolConfig.primaryModule === "string" ? protocolConfig.primaryModule : null,
-    secondaryModule: typeof protocolConfig.secondaryModule === "string" ? protocolConfig.secondaryModule : null,
-    isVegetarian: Boolean(protocolConfig.isVegetarian),
-  };
+function ErrorState() {
+  return (
+    <main className="flex min-h-screen items-center justify-center bg-eonic-bg px-5 py-10">
+      <section className="surface-panel max-w-2xl rounded-[28px] px-8 py-12 text-center">
+        <p className="font-display text-4xl italic text-eonic-text">Order not found</p>
+        <p className="mt-4 text-lg leading-8 text-eonic-text-2">
+          We couldn&apos;t find that admin order detail record. Check the order ID and try again.
+        </p>
+      </section>
+    </main>
+  );
 }
 
-function formatDate(value: string) {
-  return new Intl.DateTimeFormat("en-IN", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(new Date(value));
-}
-
-export default async function AdminOrderDetailPage({ params }: AdminOrderDetailPageProps) {
+export default async function AdminOrderDetailPage({ params }: AdminOrderPageProps) {
   const { orderId } = await params;
-  const order = await getOrderById(orderId);
-
-  if (!order || !order.users) {
-    notFound();
+  if (!isValidUUID(orderId)) {
+    return <ErrorState />;
   }
 
-  const archetypeId = order.archetype ?? order.protocol_config.archetype ?? "FOUNDATION_BUILDER";
-  const archetype = archetypes[archetypeId] ?? archetypes.FOUNDATION_BUILDER;
-  const recommendation = buildRecommendation(archetypeId, order.protocol_config as Record<string, unknown>);
-  const ingredientGroups = getIngredientBreakdown(recommendation);
+  const client = createServerClient();
+  const { data: order, error } = await client
+    .from("orders")
+    .select("id, status, archetype, protocol_config, order_date")
+    .eq("id", orderId)
+    .maybeSingle();
+
+  if (error || !order) {
+    return <ErrorState />;
+  }
+
+  const status = typeof order.status === "string" ? order.status : "intent";
+  const protocolConfig = (order.protocol_config as Record<string, unknown>) ?? {};
+  const archetype =
+    typeof order.archetype === "string"
+      ? order.archetype
+      : typeof protocolConfig.archetype === "string"
+        ? (protocolConfig.archetype as string)
+        : "Unspecified";
 
   return (
-    <main className="min-h-screen bg-white px-6 py-10 text-slate-900">
-      <div className="mx-auto max-w-6xl space-y-8">
-        <div className="flex items-center justify-between">
-          <div className="space-y-2">
-            <h1 className="text-3xl font-semibold">Order detail</h1>
-            <p className="text-sm text-slate-600">Order ID: {order.id}</p>
-          </div>
-          <Link href="/admin/pipeline" className="text-sm text-blue-700 underline">
-            Back to pipeline
-          </Link>
-        </div>
-
-        <section className="grid gap-6 md:grid-cols-2">
-          <div className="rounded-xl border border-slate-200 p-5">
-            <h2 className="text-lg font-semibold">Order</h2>
-            <dl className="mt-4 space-y-3 text-sm">
-              <div>
-                <dt className="text-slate-500">Status</dt>
-                <dd>{order.status}</dd>
-              </div>
-              <div>
-                <dt className="text-slate-500">Created</dt>
-                <dd>{formatDate(order.order_date)}</dd>
-              </div>
-              <div>
-                <dt className="text-slate-500">Updated</dt>
-                <dd>{formatDate(order.updated_at)}</dd>
-              </div>
-              <div>
-                <dt className="text-slate-500">Price</dt>
-                <dd>{order.amount_paid ? `₹${order.amount_paid}` : "₹3,999 pending"}</dd>
-              </div>
-              <div>
-                <dt className="text-slate-500">Archetype</dt>
-                <dd>{archetype.name}</dd>
-              </div>
-              <div>
-                <dt className="text-slate-500">Primary module</dt>
-                <dd>
-                  {recommendation.primaryModule
-                    ? modules[recommendation.primaryModule]?.name ?? recommendation.primaryModule
-                    : "—"}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-slate-500">Secondary module</dt>
-                <dd>
-                  {recommendation.secondaryModule
-                    ? modules[recommendation.secondaryModule]?.name ?? recommendation.secondaryModule
-                    : "—"}
-                </dd>
-              </div>
-            </dl>
-          </div>
-
-          <div className="rounded-xl border border-slate-200 p-5">
-            <h2 className="text-lg font-semibold">User</h2>
-            <dl className="mt-4 space-y-3 text-sm">
-              <div>
-                <dt className="text-slate-500">Email</dt>
-                <dd>{order.users.email}</dd>
-              </div>
-              <div>
-                <dt className="text-slate-500">WhatsApp</dt>
-                <dd>{order.users.whatsapp_number ?? "—"}</dd>
-              </div>
-              <div>
-                <dt className="text-slate-500">WhatsApp opted in</dt>
-                <dd>{order.users.whatsapp_opted_in ? "Yes" : "No"}</dd>
-              </div>
-              <div>
-                <dt className="text-slate-500">AM reminder</dt>
-                <dd>{order.users.am_reminder_time ?? "—"}</dd>
-              </div>
-              <div>
-                <dt className="text-slate-500">PM reminder</dt>
-                <dd>{order.users.pm_reminder_time ?? "—"}</dd>
-              </div>
-              <div>
-                <dt className="text-slate-500">Vegetarian</dt>
-                <dd>{recommendation.isVegetarian ? "Yes" : "No"}</dd>
-              </div>
-            </dl>
+    <main className="min-h-screen bg-eonic-bg px-5 py-10 md:px-8">
+      <div className="mx-auto max-w-4xl space-y-8">
+        <section className="surface-panel rounded-[28px] px-7 py-10">
+          <p className="font-mono text-xs uppercase tracking-[0.3em] text-eonic-text-2">Admin detail</p>
+          <h1 className="mt-4 font-display text-4xl text-eonic-text">Order {order.id}</h1>
+          <p className="mt-3 text-sm text-eonic-text-2">Status: {status}</p>
+          <p className="mt-2 text-sm text-eonic-text-2">Archetype: {archetype}</p>
+          <p className="mt-2 text-sm text-eonic-text-2">Order date: {String(order.order_date)}</p>
+          <div className="mt-6">
+            <Link href={`/protocol/${order.id}`} target="_blank" rel="noreferrer" className="text-eonic-teal">
+              View protocol page →
+            </Link>
           </div>
         </section>
 
-        <section className="rounded-xl border border-slate-200 p-5">
-          <h2 className="text-lg font-semibold">Saved protocol config</h2>
-          <pre className="mt-4 overflow-x-auto rounded-lg bg-slate-50 p-4 text-xs leading-6 text-slate-700">
-            {JSON.stringify(order.protocol_config, null, 2)}
+        <section className="rounded-[28px] border border-eonic-border bg-eonic-bg-2 px-7 py-8">
+          <p className="font-mono text-sm uppercase tracking-[0.2em] text-eonic-gold">Debug context</p>
+          <pre className="mt-3 overflow-x-auto rounded-[16px] border border-eonic-border bg-eonic-bg p-4 text-sm text-eonic-text-2">
+            {JSON.stringify(order, null, 2)}
           </pre>
-        </section>
-
-        <section className="space-y-6">
-          <h2 className="text-lg font-semibold">Full ingredient list</h2>
-          {ingredientGroups.map((group) => (
-            <div key={group.id} className="rounded-xl border border-slate-200 p-5">
-              <div className="space-y-1">
-                <h3 className="text-base font-semibold">{group.label}</h3>
-                <p className="text-sm text-slate-600">{group.description}</p>
-              </div>
-
-              <div className="mt-4 grid gap-4 md:grid-cols-2">
-                {group.ingredients.map((ingredient) => (
-                  <article key={`${group.id}-${ingredient.key}`} className="rounded-lg border border-slate-200 p-4">
-                    <div className="flex flex-wrap items-start justify-between gap-3">
-                      <div>
-                        <p className="font-mono text-xs uppercase tracking-[0.2em] text-slate-500">{ingredient.name}</p>
-                        <p className="mt-2 text-lg font-medium">{ingredient.form}</p>
-                      </div>
-                      <div className="text-right text-xs text-slate-500">
-                        <p>{ingredient.dose}</p>
-                        <p className="mt-1">{ingredient.timing}</p>
-                      </div>
-                    </div>
-                    <p className="mt-4 text-sm leading-6 text-slate-700">{ingredient.rationale}</p>
-                  </article>
-                ))}
-              </div>
-            </div>
-          ))}
         </section>
       </div>
     </main>
