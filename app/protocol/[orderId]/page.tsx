@@ -53,6 +53,8 @@ function normalizeProtocolConfig(raw: unknown): {
   primaryModule?: string | null;
   secondaryModule?: string | null;
   isVegetarian?: boolean;
+  hiddenDimensions?: string[];
+  triageSelections?: string[];
 } {
   if (!raw || typeof raw !== "object") {
     return {};
@@ -70,6 +72,16 @@ function normalizeProtocolConfig(raw: unknown): {
           ? record.secondary_module
           : null,
     isVegetarian: typeof record.isVegetarian === "boolean" ? record.isVegetarian : undefined,
+    hiddenDimensions: Array.isArray(record.hiddenDimensions)
+      ? record.hiddenDimensions.map(String).filter(Boolean)
+      : Array.isArray(record.hidden_dimensions)
+        ? record.hidden_dimensions.map(String).filter(Boolean)
+        : [],
+    triageSelections: Array.isArray(record.triageSelections)
+      ? record.triageSelections.map(String).filter(Boolean)
+      : Array.isArray(record.triageSelectionsFlags)
+        ? record.triageSelectionsFlags.map(String).filter(Boolean)
+        : [],
   };
 }
 
@@ -122,6 +134,8 @@ function buildFallbackRecommendation({ order, config, quizSession }: { order: Or
       config.secondaryModule ??
       (quizSession?.secondary_module ? String(quizSession.secondary_module) : null),
     isVegetarian: config.isVegetarian ?? !!(quizSession?.is_vegetarian ?? false),
+    hiddenDimensions: config.hiddenDimensions ?? [],
+    triageSelections: config.triageSelections ?? [],
   };
 }
 

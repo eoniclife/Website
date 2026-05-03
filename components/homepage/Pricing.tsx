@@ -2,20 +2,21 @@
 
 import { Button } from "@/components/shared/Button";
 import { trackEvent } from "@/lib/analytics";
+import { pricingCopy } from "@/lib/homepage/content";
 
 const features = [
-  "AM capsule strip + PM powder sachet",
+  "Guided reset with daily support",
   "Personalized to your quiz results",
-  "Free shipping across India",
-  "Research references for every ingredient",
+  "Free shipping where available",
   "Early-access cohort, confirmed manually",
+  "No payment until your protocol confirmation",
 ];
 
 export function Pricing() {
   return (
     <section className="px-5 py-16 md:px-8">
       <div className="mx-auto max-w-3xl rounded-[28px] border border-eonic-border bg-eonic-bg-2 px-8 py-10 text-center shadow-card">
-        <p className="font-mono text-sm uppercase tracking-[0.3em] text-eonic-gold">Your 90-day protocol</p>
+        <p className="font-mono text-sm uppercase tracking-[0.3em] text-eonic-gold">Your 90-day reset</p>
         <div className="mt-5 text-6xl font-heading text-eonic-text">₹3,999</div>
         <div className="mt-8 space-y-3 text-eonic-text-2">
           {features.map((feature) => (
@@ -32,10 +33,10 @@ export function Pricing() {
             })
           }
         >
-          Find your protocol →
+          {pricingCopy.cta} →
         </Button>
         <p className="mt-4 text-sm text-eonic-text-muted">
-          We confirm on WhatsApp before taking payment. Nothing is charged until you say so.
+          {pricingCopy.note}
         </p>
       </div>
     </section>

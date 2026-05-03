@@ -14,6 +14,14 @@ function formatDate(value: string) {
 
 export default async function AdminPipelinePage() {
   const orders = await getAllOrders();
+  const total = orders.length;
+  const statusBreakdown = orders.reduce<Record<string, number>>((acc, order) => {
+    acc[order.status] = (acc[order.status] ?? 0) + 1;
+    return acc;
+  }, {});
+  const intentCount = statusBreakdown.intent ?? 0;
+  const reservedCount = statusBreakdown.reserved ?? 0;
+  const paidCount = statusBreakdown.paid ?? 0;
 
   return (
     <main className="min-h-screen bg-white px-6 py-10 text-slate-900">
@@ -24,6 +32,25 @@ export default async function AdminPipelinePage() {
             Internal only. Access is protected by the shared admin token.
           </p>
         </header>
+
+        <div className="grid gap-4 sm:grid-cols-3">
+          <section className="rounded-xl border border-slate-200 bg-white px-6 py-5">
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">Total orders</p>
+            <p className="mt-3 text-3xl font-semibold text-slate-900">{total}</p>
+          </section>
+          <section className="rounded-xl border border-slate-200 bg-white px-6 py-5">
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">Intent / reserved / paid</p>
+            <p className="mt-3 text-3xl font-semibold text-slate-900">
+              {intentCount} / {reservedCount} / {paidCount}
+            </p>
+          </section>
+          <section className="rounded-xl border border-slate-200 bg-white px-6 py-5">
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">With WhatsApp details</p>
+            <p className="mt-3 text-3xl font-semibold text-slate-900">
+              {orders.filter((order) => Boolean(order.users?.whatsapp_number)).length}
+            </p>
+          </section>
+        </div>
 
         <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
           <table className="min-w-full divide-y divide-slate-200 text-sm">

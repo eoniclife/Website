@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/shared/Button";
 import { trackEvent } from "@/lib/analytics";
+import { heroCopy, heroSamplePoints } from "@/lib/homepage/content";
 
 export function Hero() {
   return (
@@ -10,12 +11,10 @@ export function Hero() {
         <div className="space-y-8">
           <div className="space-y-5">
             <h1 className="max-w-3xl font-heading text-5xl leading-tight text-balance text-eonic-text md:text-7xl">
-              Know what your system
-              <br />
-              is asking for.
+              {heroCopy.title}
             </h1>
             <p className="max-w-2xl text-lg leading-8 text-eonic-text-2 md:text-xl">
-              Eonic turns an adaptive quiz into a 90-day supplement protocol, then shows you the ingredients, timing, and rationale clearly enough to judge it for yourself.
+              {heroCopy.description}
             </p>
           </div>
           <div className="flex flex-col gap-4 sm:flex-row">
@@ -28,49 +27,31 @@ export function Hero() {
                 })
               }
             >
-              Find your protocol →
+              {heroCopy.primaryCta} →
             </Button>
-            <Button href="/science" variant="secondary">
-              See what&apos;s in it
+            <Button href="/#how-it-works" variant="secondary">
+              {heroCopy.secondaryCta}
             </Button>
           </div>
-          <p className="text-sm text-eonic-text-muted">Usually takes 2–4 minutes. No account required. No payment upfront.</p>
+          <p className="text-sm text-eonic-text-muted">{heroCopy.assurance}</p>
         </div>
 
         <div className="surface-panel rounded-[28px] p-8">
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-eonic-gold">Sample protocol</p>
-          <p className="mt-3 font-heading text-xl text-eonic-text">Restorer + Focus stack</p>
-          <p className="mt-1 text-sm text-eonic-text-muted">9 archetypes · personalised to your answers</p>
-
+          <p className="font-mono text-xs uppercase tracking-[0.3em] text-eonic-gold">What this check-in is for</p>
+          <p className="mt-3 font-heading text-xl text-eonic-text">Guided reset, not random supplementation</p>
+          <p className="mt-1 text-sm text-eonic-text-muted">Pattern recognition first, then structured action.</p>
           <div className="mt-6 space-y-5">
-            <div>
-              <p className="font-mono text-xs uppercase tracking-[0.25em] text-eonic-teal">AM Strip</p>
-              <div className="mt-3 space-y-2">
-                {["Vitamin D3 + K2 (MK-7)", "Methylcobalamin B12", "Omega-3 (TG form)"].map((name) => (
-                  <div key={name} className="flex items-center gap-3">
-                    <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-eonic-teal" />
-                    <span className="font-mono text-sm text-eonic-text-2">{name}</span>
-                  </div>
-                ))}
+            {heroSamplePoints.map((item) => (
+              <div key={item.title}>
+                <p className="font-mono text-xs uppercase tracking-[0.25em] text-eonic-teal">{item.title}</p>
+                <p className="mt-2 text-sm text-eonic-text-2">{item.detail}</p>
               </div>
-            </div>
-
-            <div>
-              <p className="font-mono text-xs uppercase tracking-[0.25em] text-eonic-gold">PM Sachet</p>
-              <div className="mt-3 space-y-2">
-                {["Magnesium Glycinate", "Ashwagandha KSM-66"].map((name) => (
-                  <div key={name} className="flex items-center gap-3">
-                    <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-eonic-gold" />
-                    <span className="font-mono text-sm text-eonic-text-2">{name}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            ))}
           </div>
 
           <div className="mt-6 flex items-center justify-between border-t border-eonic-border pt-4">
-            <span className="text-xs text-eonic-text-muted">5 ingredients · 90 days</span>
-            <span className="font-mono text-xs text-eonic-teal">→ yours will differ</span>
+            <span className="text-xs text-eonic-text-muted">90-day guided reset</span>
+            <span className="font-mono text-xs text-eonic-teal">→ structured and personal</span>
           </div>
         </div>
       </div>

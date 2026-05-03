@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/shared/Button";
 import { createSession } from "@/lib/quiz/api";
 import { useQuizStore } from "@/lib/quiz/store";
+import { trackEvent } from "@/lib/analytics";
 
 function createUuid() {
   return crypto.randomUUID();
@@ -33,6 +34,12 @@ export default function QuizEntryPage() {
 
   async function handleBegin() {
     const nextSession = completed ? createUuid() : sessionUuid ?? createUuid();
+    const sessionId = nextSession;
+    trackEvent({
+      event: "quiz_started",
+      sessionUuid: sessionId,
+      data: { resumed: completed || Boolean(sessionUuid) },
+    });
 
     if (completed) {
       resetQuiz();
@@ -43,8 +50,17 @@ export default function QuizEntryPage() {
 
     try {
       await createSession(nextSession);
+      trackEvent({
+        event: "quiz_session_created",
+        sessionUuid: sessionId,
+      });
     } catch (error) {
       console.error(error);
+      trackEvent({
+        event: "quiz_session_create_failed",
+        sessionUuid: sessionId,
+        data: { message: error instanceof Error ? error.message : "Unknown error" },
+      });
     }
 
     router.push("/quiz/QT1");

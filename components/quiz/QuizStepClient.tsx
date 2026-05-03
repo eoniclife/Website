@@ -91,6 +91,37 @@ export function QuizStepClient({ step }: { step: string }) {
     });
   }, [hasHydrated, question, questionIndex, questionTotal, sessionUuid, step]);
 
+  useEffect(() => {
+    if (!hasHydrated || !sessionUuid) {
+      return;
+    }
+
+    const onPageHide = () => {
+      if (question?.id === "LOADING" || step === "LOADING") {
+        return;
+      }
+
+      trackEvent({
+        event: "quiz_step_dropped_off",
+        sessionUuid,
+        data: {
+          step,
+          question_index: questionIndex,
+          question_total: questionTotal,
+          question_id: question?.id ?? null,
+          reason: "page_exit",
+        },
+      });
+    };
+
+    window.addEventListener("pagehide", onPageHide);
+    window.addEventListener("beforeunload", onPageHide);
+    return () => {
+      window.removeEventListener("pagehide", onPageHide);
+      window.removeEventListener("beforeunload", onPageHide);
+    };
+  }, [hasHydrated, question?.id, questionIndex, questionTotal, sessionUuid, step]);
+
   const advance = useCallback(
     (fromStep: string, sequence = adaptiveSequence) => {
       const next = getNextStep(fromStep, sequence);
@@ -179,6 +210,13 @@ export function QuizStepClient({ step }: { step: string }) {
 
     hasCompletedLoading.current = true;
     const response = await getRecommendation(sessionUuid, answers);
+    trackEvent({
+      event: "quiz_completed",
+      sessionUuid,
+      data: {
+        question_count: Object.keys(answers).length,
+      },
+    });
     setCompleted(response.result);
     router.replace("/protocol");
   }

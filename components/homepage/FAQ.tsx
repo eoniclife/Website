@@ -2,14 +2,7 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-
-const questions = [
-  ["Do I need bloodwork to start?", "No. The quiz is designed to give you a strong starting baseline without requiring bloodwork first."],
-  ["What if I'm vegetarian?", "The quiz accounts for vegetarian diets. B12 is elevated in the protocol when relevant."],
-  ["How is this different from buying supplements individually?", "You're not assembling a stack ingredient by ingredient. The protocol is built from a baseline, your archetype-specific ingredients, and targeted add-ons. The rationale for each is shown on the page."],
-  ["What happens after I reserve?", "We're in early access. We follow up on WhatsApp within 24 hours to confirm the order and share payment details. Nothing is charged until you confirm."],
-  ["Is this safe if I'm on medication?", "If you're on medication or managing an existing condition, review the ingredients with your physician before starting any supplement regimen."],
-];
+import { faqCopy } from "@/lib/homepage/content";
 
 export function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
@@ -22,7 +15,7 @@ export function FAQ() {
           <h2 className="mt-3 font-heading text-4xl text-eonic-text">What people ask before they start.</h2>
         </div>
         <div className="space-y-4">
-          {questions.map(([question, answer], index) => {
+          {faqCopy.map(([question, answer], index) => {
             const active = open === index;
             return (
               <button
