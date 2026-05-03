@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "eonic-life",
+  "name": "website",
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-03-21",
   "compatibility_flags": [
@@ -14,7 +14,7 @@
   "services": [
     {
       "binding": "WORKER_SELF_REFERENCE",
-      "service": "eonic-life"
+      "service": "website"
     }
   ],
   "observability": {
